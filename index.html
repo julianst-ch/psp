@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Signage Performance Test - Wollishofen</title>
+    <title>Signage Performance Test - Schindler/PSP</title>
     
-    <!-- Base styling framework mapping the original platform styling -->
     <style>
         /* Base reset to optimize for Tizen embedded webview */
         html, body {
@@ -35,7 +34,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 40px;
-            background: rgba(15, 15, 15, 0.85);
+            background: rgba(15, 15, 15, 0.9);
             border-bottom: 1px solid #222;
             z-index: 10;
         }
@@ -68,7 +67,7 @@
             display: flex;
             align-items: center;
             gap: 30px;
-            background: rgba(20, 20, 20, 0.8);
+            background: rgba(20, 20, 20, 0.85);
             padding: 30px;
             border-radius: 8px;
             border: 1px solid #333;
@@ -107,7 +106,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            /* Forces GPU rendering processing on Samsung signage chips */
+            /* Forces GPU rendering on Samsung signage SOCs */
             -webkit-transform: translate3d(0,0,0);
             transform: translate3d(0,0,0);
             -webkit-backface-visibility: hidden;
@@ -145,12 +144,11 @@
         <nav>
             <div class="logo"><strong>PSP</strong> Swiss Property</div>
             <div class="nav-info">
-                <time id="live-date">Freitag, 3.07.2026</time>
+                <time id="live-date">Freitag, 03.07.2026</time>
             </div>
         </nav>
 
         <main>
-            <!-- Left Side: Profile and Information Data -->
             <div class="content-section">
                 <div class="profile-card">
                     <img class="profile-img" src="https://signage.web233.onlime.ch/img/MXwgPEBZDd/512x0_fit/fabian-laube-web.jpg?1778080511" alt="Fabian Laube">
@@ -164,28 +162,17 @@
 
                 <div class="qr-box">
                     <p>Hier mehr:</p>
-                    <!-- Fallback source representation of the inline asset system -->
                     <div style="background: white; padding: 10px; border-radius: 4px;">
                         <div style="width: 130px; height: 130px; background: #222; margin: 0 auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem;">QR Code Area</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Right Side: Optimized Media Window -->
             <div class="visual-section">
                 <div class="optimized-media-container">
                     
-                    <!-- 
-                      FALLBACK IMAGE: 
-                      Displays instantly so the screen is never black while the player initiates.
-                    -->
-                    <img id="fallback-img" src="https://signage.web233.onlime.ch/img/o6bpYl34MZ/1280x0_fit/png.png?1768591757" alt="Transformation an der Via Emilio Bossi">
+                    <img id="fallback-img" src="image_ec7ce3.jpg" alt="Logistics Elevator Standby View">
                     
-                    <!-- 
-                      OPTIMIZED VIDEO PIPELINE:
-                      Uses the required attributes for Tizen platforms.
-                      Change the source URL below to your specific video asset.
-                    -->
                     <video 
                         id="signage-video"
                         autoplay 
@@ -194,8 +181,8 @@
                         playsinline 
                         webkit-playsinline 
                         preload="auto"
-                        style="opacity: 0; transition: opacity 0.5s ease-in-out;">
-                        <source src="YOUR_VIDEO_FILE_URL.mp4" type="video/mp4">
+                        style="opacity: 0; transition: opacity 0.4s ease-in-out;">
+                        <source src="https://player.vimeo.com/progressive_redirect/playback/765687745/rendition/720p/file.mp4%20%28720p%29.mp4?loc=external&oauth2_token_id=1053797514&signature=74f808a1b8dbc0b9f5e38f17a006502a58feeff1c6c4707a52b159351d11c062" type="video/mp4">
                     </video>
 
                 </div>
@@ -208,27 +195,27 @@
             const video = document.getElementById('signage-video');
             const fallbackImg = document.getElementById('fallback-img');
 
-            // Force play loop for commercial signage nodes
+            // Play loop specifically configured for webkit signage platforms
             const initializePlayback = () => {
                 video.play().then(() => {
-                    // Smooth transition to video once verified playing to avoid the black flash
+                    // Smooth switch to video once engine verifies rendering has started
                     video.style.opacity = "1";
                     fallbackImg.style.opacity = "0";
                 }).catch((err) => {
-                    console.warn("Autoplay deferred, applying sequential retry structure:", err);
+                    console.warn("Autoplay deferred by player policy, retrying loop sequence...", err);
                     setTimeout(() => {
                         video.muted = true;
                         video.play().then(() => {
                             video.style.opacity = "1";
                             fallbackImg.style.opacity = "0";
                         });
-                    }, 800);
+                    }, 500);
                 });
             };
 
             initializePlayback();
 
-            // Clock synchronization matching the original data display structure
+            // Clock updates matching original layout behavior
             const updateClock = () => {
                 const now = new Date();
                 const options = { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' };
