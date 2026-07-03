@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Signage Video Test</title>
+    <style>
+        /* Reset and prevent scrolling/overscroll behaviors typical in embedded webviews */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000000;
+            font-family: sans-serif;
+        }
+
+        /* Container ensuring the video stays exactly full screen */
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Optimized video element styling */
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Change to 'contain' if you prefer letterboxing over cropping */
+            
+            /* Force Hardware Acceleration on Tizen / WebKit engines */
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            
+            /* Prevent native player controls from flashing on screen */
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="video-container">
+        <video 
+            id="signage-video"
+            autoplay 
+            muted 
+            loop 
+            playsinline 
+            webkit-playsinline 
+            preload="auto">
+            <source src="YOUR_VIDEO_FILE_URL.mp4" type="video/mp4">
+            Ihr Browser unterstützt dieses Videoformat nicht.
+        </video>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('signage-video');
+
+            // Failsafe: Force playback initialization if the autoplay attribute is throttled
+            const forcePlay = () => {
+                video.play().then(() => {
+                    console.log("Playback successfully started automatically.");
+                }).catch((error) => {
+                    console.error("Autoplay prevented. Attempting retry...", error);
+                    
+                    // Retry strategy: Tizen webviews sometimes need a brief delay after document ready
+                    setTimeout(() => {
+                        video.muted = true; // Double check muting
+                        video.play().catch(e => console.error("Final playback attempt failed: ", e));
+                    }, 1000);
+                });
+            };
+
+            // Trigger immediately
+            forcePlay();
+
+            // Handle potential standby/resume cycles common in digital signage displays
+            document.addEventListener("visibilitychange", () => {
+                if (document.visibilityState === "visible") {
+                    video.play().catch(e => console.error("Failed to resume playback on visibility change:", e));
+                }
+            });
+        });
+    </script>
+</body>
+</html>
