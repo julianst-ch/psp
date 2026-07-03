@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Signage Video Test</title>
+    <title>Signage Performance Test - Wollishofen</title>
+    
+    <!-- Base styling framework mapping the original platform styling -->
     <style>
-        /* Reset and prevent scrolling/overscroll behaviors typical in embedded webviews */
+        /* Base reset to optimize for Tizen embedded webview */
         html, body {
             margin: 0;
             padding: 0;
@@ -13,82 +15,226 @@
             height: 100%;
             overflow: hidden;
             background-color: #000000;
-            font-family: sans-serif;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Container ensuring the video stays exactly full screen */
-        .video-container {
+        /* Layout structure mirroring the original page container grid */
+        .signage-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        nav {
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            background: rgba(15, 15, 15, 0.85);
+            border-bottom: 1px solid #222;
+            z-index: 10;
+        }
+
+        .nav-info {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+            font-size: 1.1rem;
+        }
+
+        main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: calc(100% - 80px);
+            position: relative;
+        }
+
+        .content-section {
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 5;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .profile-card {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            background: rgba(20, 20, 20, 0.8);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            max-width: 500px;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .name { font-size: 1.6rem; font-weight: bold; }
+        .title { color: #aaa; font-size: 1.1rem; }
+        .contact { font-size: 1rem; color: #888; margin-top: 5px; }
+
+        /* Media display section handling the hardware optimized visual wrapper */
+        .visual-section {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Tizen hardware acceleration optimization layer */
+        .optimized-media-container {
+            width: 100%;
+            height: 100%;
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Optimized video element styling */
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Change to 'contain' if you prefer letterboxing over cropping */
-            
-            /* Force Hardware Acceleration on Tizen / WebKit engines */
-            -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
+            /* Forces GPU rendering processing on Samsung signage chips */
+            -webkit-transform: translate3d(0,0,0);
+            transform: translate3d(0,0,0);
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
-            
-            /* Prevent native player controls from flashing on screen */
-            outline: none;
+            -webkit-perspective: 1000;
+            perspective: 1000;
         }
+
+        .optimized-media-container img, 
+        .optimized-media-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .qr-box {
+            margin-top: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            display: inline-block;
+            max-width: 200px;
+            text-align: center;
+        }
+        
+        .qr-box p { margin: 0 0 10px 0; font-size: 0.9rem; color: #ccc; }
     </style>
 </head>
 <body>
 
-    <div class="video-container">
-        <video 
-            id="signage-video"
-            autoplay 
-            muted 
-            loop 
-            playsinline 
-            webkit-playsinline 
-            preload="auto">
-            <source src="YOUR_VIDEO_FILE_URL.mp4" type="video/mp4">
-            Ihr Browser unterstützt dieses Videoformat nicht.
-        </video>
+    <div class="signage-container">
+        <nav>
+            <div class="logo"><strong>PSP</strong> Swiss Property</div>
+            <div class="nav-info">
+                <time id="live-date">Freitag, 3.07.2026</time>
+            </div>
+        </nav>
+
+        <main>
+            <!-- Left Side: Profile and Information Data -->
+            <div class="content-section">
+                <div class="profile-card">
+                    <img class="profile-img" src="https://signage.web233.onlime.ch/img/MXwgPEBZDd/512x0_fit/fabian-laube-web.jpg?1778080511" alt="Fabian Laube">
+                    <div class="profile-details">
+                        <div class="name">Fabian Laube</div>
+                        <div class="title">Leiter Bewirtschaftung</div>
+                        <div class="contact">Tel. +41 44 625 57 23</div>
+                        <div class="contact">fabian.laube@psp.info</div>
+                    </div>
+                </div>
+
+                <div class="qr-box">
+                    <p>Hier mehr:</p>
+                    <!-- Fallback source representation of the inline asset system -->
+                    <div style="background: white; padding: 10px; border-radius: 4px;">
+                        <div style="width: 130px; height: 130px; background: #222; margin: 0 auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem;">QR Code Area</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Optimized Media Window -->
+            <div class="visual-section">
+                <div class="optimized-media-container">
+                    
+                    <!-- 
+                      FALLBACK IMAGE: 
+                      Displays instantly so the screen is never black while the player initiates.
+                    -->
+                    <img id="fallback-img" src="https://signage.web233.onlime.ch/img/o6bpYl34MZ/1280x0_fit/png.png?1768591757" alt="Transformation an der Via Emilio Bossi">
+                    
+                    <!-- 
+                      OPTIMIZED VIDEO PIPELINE:
+                      Uses the required attributes for Tizen platforms.
+                      Change the source URL below to your specific video asset.
+                    -->
+                    <video 
+                        id="signage-video"
+                        autoplay 
+                        muted 
+                        loop 
+                        playsinline 
+                        webkit-playsinline 
+                        preload="auto"
+                        style="opacity: 0; transition: opacity 0.5s ease-in-out;">
+                        <source src="YOUR_VIDEO_FILE_URL.mp4" type="video/mp4">
+                    </video>
+
+                </div>
+            </div>
+        </main>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('signage-video');
+            const fallbackImg = document.getElementById('fallback-img');
 
-            // Failsafe: Force playback initialization if the autoplay attribute is throttled
-            const forcePlay = () => {
+            // Force play loop for commercial signage nodes
+            const initializePlayback = () => {
                 video.play().then(() => {
-                    console.log("Playback successfully started automatically.");
-                }).catch((error) => {
-                    console.error("Autoplay prevented. Attempting retry...", error);
-                    
-                    // Retry strategy: Tizen webviews sometimes need a brief delay after document ready
+                    // Smooth transition to video once verified playing to avoid the black flash
+                    video.style.opacity = "1";
+                    fallbackImg.style.opacity = "0";
+                }).catch((err) => {
+                    console.warn("Autoplay deferred, applying sequential retry structure:", err);
                     setTimeout(() => {
-                        video.muted = true; // Double check muting
-                        video.play().catch(e => console.error("Final playback attempt failed: ", e));
-                    }, 1000);
+                        video.muted = true;
+                        video.play().then(() => {
+                            video.style.opacity = "1";
+                            fallbackImg.style.opacity = "0";
+                        });
+                    }, 800);
                 });
             };
 
-            // Trigger immediately
-            forcePlay();
+            initializePlayback();
 
-            // Handle potential standby/resume cycles common in digital signage displays
-            document.addEventListener("visibilitychange", () => {
-                if (document.visibilityState === "visible") {
-                    video.play().catch(e => console.error("Failed to resume playback on visibility change:", e));
-                }
-            });
+            // Clock synchronization matching the original data display structure
+            const updateClock = () => {
+                const now = new Date();
+                const options = { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' };
+                document.getElementById('live-date').innerText = now.toLocaleDateString('de-CH', options);
+            };
+            setInterval(updateClock, 60000);
         });
     </script>
 </body>
