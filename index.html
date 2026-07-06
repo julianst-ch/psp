@@ -1,228 +1,707 @@
-<!DOCTYPE html>
+
+<!doctype html>
+<!-- Website powered by Evolve - a product of Racerfish / https://racerfish.com -->
 <html lang="de">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Signage Performance Test - Schindler/PSP</title>
+    <meta charset="utf-8">
+<link rel="alternate" href="https://signage.web233.onlime.ch/de/wollishofen" hreflang="de">
+<link rel="canonical" href="https://signage.web233.onlime.ch/de/wollishofen">
+<meta name="author" content="PSP Signage">
+<meta name="csrf-token" content="XkisJLTsvrJMGrq4tQeMCZBdYyC6r0zmqUkbkbkr">
+<meta name="description" content="PSP Signage">
+<meta name="generator" content="Evolve by Racerfish AG">
+<meta property="og:description" content="PSP Signage">
+<meta property="og:image" content="https://signage.web233.onlime.ch/img/rV2p84pKNP/1200x630_crop/cintam-ejfg-abrfga-unsplash.jpg">
+<meta property="og:image:height" content="630">
+<meta property="og:image:width" content="1200">
+<meta property="og:site_name" content="PSP Signage">
+<meta property="og:title" content="Wollishofen">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://signage.web233.onlime.ch/de/wollishofen">
+<meta name="robots" content="noindex, nofollow">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="PSP Signage">
+<meta name="twitter:image" content="https://signage.web233.onlime.ch/img/rV2p84pKNP/1200x628_crop/cintam-ejfg-abrfga-unsplash.jpg">
+<meta name="twitter:image:alt" content="cintam-EJfG_aBRFGA-unsplash">
+<meta name="twitter:title" content="Wollishofen">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wollishofen</title>
+
+
+<script>
+    window.name = '_frontend';
+    window.laravelDebug = true;
+    window.laravelEnv = "local";
+
     
-    <style>
-        /* Base reset to optimize for Tizen embedded webview */
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000000;
-            color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
 
-        /* Layout structure mirroring the original page container grid */
-        .signage-container {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
+    if(navigator.userAgent.indexOf("MSIE") != -1 || navigator.userAgent.indexOf("Trident") != -1) {
+        window.location.href('/outdated-browser');
+    }
+</script>
 
-        nav {
-            height: 80px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 40px;
-            background: rgba(15, 15, 15, 0.9);
-            border-bottom: 1px solid #222;
-            z-index: 10;
-        }
 
-        .nav-info {
-            display: flex;
-            flex-direction: column;
-            text-align: right;
-            font-size: 1.1rem;
-        }
-
-        main {
-            flex: 1;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            height: calc(100% - 80px);
-            position: relative;
-        }
-
-        .content-section {
-            padding: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            z-index: 5;
-            background: rgba(0, 0, 0, 0.4);
-        }
-
-        .profile-card {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-            background: rgba(20, 20, 20, 0.85);
-            padding: 30px;
-            border-radius: 8px;
-            border: 1px solid #333;
-            max-width: 500px;
-        }
-
-        .profile-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .profile-details {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .name { font-size: 1.6rem; font-weight: bold; }
-        .title { color: #aaa; font-size: 1.1rem; }
-        .contact { font-size: 1rem; color: #888; margin-top: 5px; }
-
-        /* Media display section handling the hardware optimized visual wrapper */
-        .visual-section {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        /* Tizen hardware acceleration optimization layer */
-        .optimized-media-container {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            /* Forces GPU rendering on Samsung signage SOCs */
-            -webkit-transform: translate3d(0,0,0);
-            transform: translate3d(0,0,0);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            -webkit-perspective: 1000;
-            perspective: 1000;
-        }
-
-        .optimized-media-container img, 
-        .optimized-media-container video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .qr-box {
-            margin-top: 40px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 8px;
-            display: inline-block;
-            max-width: 200px;
-            text-align: center;
-        }
-        
-        .qr-box p { margin: 0 0 10px 0; font-size: 0.9rem; color: #ccc; }
-    </style>
-</head>
-<body>
-
-    <div class="signage-container">
-        <nav>
-            <div class="logo"><strong>PSP</strong> Swiss Property</div>
-            <div class="nav-info">
-                <time id="live-date">Freitag, 03.07.2026</time>
-            </div>
-        </nav>
-
-        <main>
-            <div class="content-section">
-                <div class="profile-card">
-                    <img class="profile-img" src="https://signage.web233.onlime.ch/img/MXwgPEBZDd/512x0_fit/fabian-laube-web.jpg?1778080511" alt="Fabian Laube">
-                    <div class="profile-details">
-                        <div class="name">Fabian Laube</div>
-                        <div class="title">Leiter Bewirtschaftung</div>
-                        <div class="contact">Tel. +41 44 625 57 23</div>
-                        <div class="contact">fabian.laube@psp.info</div>
-                    </div>
-                </div>
-
-                <div class="qr-box">
-                    <p>Hier mehr:</p>
-                    <div style="background: white; padding: 10px; border-radius: 4px;">
-                        <div style="width: 130px; height: 130px; background: #222; margin: 0 auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem;">QR Code Area</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="visual-section">
-                <div class="optimized-media-container">
-                    
-                    <img id="fallback-img" src="image_ec7ce3.jpg" alt="Logistics Elevator Standby View">
-                    
-                    <video 
-                        id="signage-video"
-                        autoplay 
-                        muted 
-                        loop 
-                        playsinline 
-                        webkit-playsinline 
-                        preload="auto"
-                        style="opacity: 0; transition: opacity 0.4s ease-in-out;">
-                        <source src="https://player.vimeo.com/progressive_redirect/playback/765687745/rendition/720p/file.mp4%20%28720p%29.mp4?loc=external&oauth2_token_id=1053797514&signature=74f808a1b8dbc0b9f5e38f17a006502a58feeff1c6c4707a52b159351d11c062" type="video/mp4">
-                    </video>
-
-                </div>
-            </div>
-        </main>
-    </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const video = document.getElementById('signage-video');
-            const fallbackImg = document.getElementById('fallback-img');
+    window.BLOG_OVERVIEW_URL = null;
+</script>                <!-- Evolve/Vite Production Assets -->
+    
+        <link href="https://signage.web233.onlime.ch/assets/styles-6c0b30e1.css" rel="stylesheet">
+        
+    <script type="module" src="/assets/app-bea1aac3.js" defer data-cookieconsent="ignore"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 
-            // Play loop specifically configured for webkit signage platforms
-            const initializePlayback = () => {
-                video.play().then(() => {
-                    // Smooth switch to video once engine verifies rendering has started
-                    video.style.opacity = "1";
-                    fallbackImg.style.opacity = "0";
-                }).catch((err) => {
-                    console.warn("Autoplay deferred by player policy, retrying loop sequence...", err);
-                    setTimeout(() => {
-                        video.muted = true;
-                        video.play().then(() => {
-                            video.style.opacity = "1";
-                            fallbackImg.style.opacity = "0";
-                        });
-                    }, 500);
-                });
-            };
+    <!-- Livewire Styles -->
+<style >
+    [wire\:loading], [wire\:loading\.delay], [wire\:loading\.inline-block], [wire\:loading\.inline], [wire\:loading\.block], [wire\:loading\.flex], [wire\:loading\.table], [wire\:loading\.grid], [wire\:loading\.inline-flex] {
+        display: none;
+    }
 
-            initializePlayback();
+    [wire\:loading\.delay\.shortest], [wire\:loading\.delay\.shorter], [wire\:loading\.delay\.short], [wire\:loading\.delay\.long], [wire\:loading\.delay\.longer], [wire\:loading\.delay\.longest] {
+        display:none;
+    }
 
-            // Clock updates matching original layout behavior
-            const updateClock = () => {
-                const now = new Date();
-                const options = { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' };
-                document.getElementById('live-date').innerText = now.toLocaleDateString('de-CH', options);
-            };
-            setInterval(updateClock, 60000);
-        });
+    [wire\:offline] {
+        display: none;
+    }
+
+    [wire\:dirty]:not(textarea):not(input):not(select) {
+        display: none;
+    }
+
+    input:-webkit-autofill, select:-webkit-autofill, textarea:-webkit-autofill {
+        animation-duration: 50000s;
+        animation-name: livewireautofill;
+    }
+
+    @keyframes livewireautofill { from {} }
+</style>
+
+        </head>
+
+
+<body class="">
+    <script>
+    // Tracking configuration
+            
+
+    
+    
+    
+    
     </script>
+
+
+    
+                <div class="app hb-accent-default w-screen h-screen flex flex-col overflow-hidden">
+    <nav
+    class="
+        navbar group px-r-sm text-lightest bg-silver-strong w-full z-40 top-0 inset-x-0 transition-all shrink-0
+    "
+    >
+    <div class="navbar-inner breakout flex justify-between items-center z-50 h-nav-height-md lg:relative transition-all duration-500">
+        <a href="/" class="navbar-brand flex items-center gap-4">
+            <svg class="w-20 h-auto" fill="currentColor" xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 463.347 273.922">
+  <path d="M689.795 528.627h-7.242v-169.66h7.242v169.66zM519.836 528.627h-7.242v-169.66h7.242v169.66zM390.755 560.156c-8.633 0-14.989 5.494-14.989 12.947 0 3.455 1.331 6.594 3.763 8.793 1.965 1.803 4.319 3.06 12.089 6.668 4.708 2.198 6.122 2.983 7.847 4.552 1.964 1.804 2.983 4.158 2.983 6.907 0 5.966-4.864 10.202-11.615 10.202-7.536 0-12.006-4.396-12.4-12.166h-4.392c.546 10.519 6.356 16.168 16.558 16.168 9.807 0 16.558-5.888 16.558-14.516 0-2.67-.707-5.337-2.042-7.457-1.882-3.061-4.709-5.021-12.006-8.399l-5.805-2.744c-4.87-2.198-6.99-4.787-6.99-8.242 0-4.943 4.319-8.71 10.207-8.71 6.278 0 10.046 3.455 10.67 9.811h4.396c-.472-8.715-5.888-13.814-14.832-13.814M422.575 613.913h3.69l9.183-31.551 9.1 31.551h3.69l10.753-37.669h-4.397l-8.32 30.45-9.023-30.45h-3.69l-9.022 30.45-8.32-30.45h-4.314l10.67 37.67z" transform="translate(-374.04 -355.057)"/>
+  <path d="M466.454 613.363h4.474V576.24h-4.474v37.123zm-1.258-49.44c0 1.964 1.492 3.45 3.53 3.45 1.964 0 3.455-1.486 3.455-3.45 0-1.96-1.491-3.451-3.534-3.451h-.156c-1.881.078-3.295 1.565-3.295 3.45" transform="translate(-374.04 -355.057)"/>
+  <path d="M493.896 575.145c-7.063 0-12.005 4.158-12.005 10.124 0 5.099 2.666 7.848 9.807 10.046 9.812 3.061 10.752 3.763 10.752 8.004 0 4.396-3.373 7.297-8.554 7.297-5.571 0-8.71-2.823-9.178-8.394h-4.085c0 7.687 4.787 12.083 13.263 12.083 7.848 0 12.873-4.474 12.873-11.459 0-2.272-.55-4.236-1.574-5.727-1.565-2.277-3.763-3.373-10.514-5.416-6.829-1.96-8.555-3.295-8.555-6.59 0-3.768 3.14-6.2 7.77-6.2 5.025 0 7.614 2.276 8.164 7.219h4.002c-.316-7.063-4.63-10.987-12.166-10.987M527.264 575.145c-7.063 0-12.006 4.158-12.006 10.124 0 5.099 2.667 7.848 9.807 10.046 9.812 3.061 10.753 3.763 10.753 8.004 0 4.396-3.373 7.297-8.554 7.297-5.572 0-8.71-2.823-9.183-8.394H514c0 7.687 4.786 12.083 13.263 12.083 7.847 0 12.868-4.474 12.868-11.459 0-2.272-.546-4.236-1.57-5.727-1.565-2.277-3.763-3.373-10.514-5.416-6.828-1.96-8.554-3.295-8.554-6.59 0-3.768 3.14-6.2 7.77-6.2 5.025 0 7.613 2.276 8.16 7.219h4.006c-.317-7.063-4.63-10.987-12.166-10.987" transform="translate(-374.04 -355.057)"/>
+  <path d="M571.32 613.364h4.63V591.39h3.846c8.554 0 11.455-.394 14.832-1.881 4.71-2.12 7.536-6.99 7.536-13.107 0-6.75-3.534-12.088-9.183-13.97-3.061-1.097-6.356-1.413-14.204-1.413h-7.457v52.345zm4.396-48.422H582.228c3.924.079 6.83.473 9.105 1.258 3.686 1.413 5.884 5.177 5.884 10.202 0 5.727-2.667 9.339-7.692 10.436-2.588.55-4.47.629-9.885.629h-3.924v-22.524z" transform="translate(-374.04 -355.057)"/>
+  <path d="M609.662 586.916v26.448h4.158v-16.402c0-5.494.55-8.789 1.808-11.616 1.804-3.923 4.63-6.2 7.453-6.2 1.335 0 2.276.312 4.787 1.414v-4.08c-1.648-.863-3.452-1.336-5.021-1.336-3.924 0-6.75 2.75-9.34 9.106.079-1.024.079-1.809.079-2.355 0-1.808-.156-3.846-.629-5.654h-3.846c.473 3.534.551 4.87.551 10.675" transform="translate(-374.04 -355.057)"/>
+  <path d="M646.294 614.305c9.261 0 15.462-7.848 15.462-19.541 0-11.694-6.2-19.62-15.462-19.62-9.26 0-15.539 7.926-15.539 19.62 0 11.693 6.278 19.54 15.54 19.54m0-35.392c6.672 0 11.22 6.356 11.22 15.851 0 9.496-4.47 15.774-11.22 15.774-6.751 0-11.3-6.278-11.3-15.774 0-9.495 4.549-15.85 11.3-15.85M674.255 628.825v-20.877c2.588 4.24 6.2 6.356 10.987 6.356 8.554 0 13.891-7.53 13.891-19.302 0-11.85-5.732-19.858-14.204-19.858-4.869 0-8.164 2.12-10.674 6.907l-.078-1.253c-.078-2.276-.156-3.061-.629-4.553h-4.236c.624 2.116.785 4.08.785 10.748v41.832h4.158zm-.156-34.062c0-9.34 4.392-15.93 10.67-15.93 6.2 0 10.124 6.357 10.124 16.247 0 9.729-3.69 15.539-9.964 15.539-6.516 0-10.83-6.439-10.83-15.856M737.107 593.823c0-11.303-5.65-18.678-14.443-18.678-9.256 0-15.222 7.848-15.222 20.092 0 11.85 5.888 19.068 15.617 19.068 6.356 0 10.753-3.061 13.107-9.105l-4.002-.707c-2.276 4.397-4.791 6.122-9.183 6.122-7.063 0-11.065-5.415-11.303-15.378h25.429v-1.414zm-25.269-1.964c.94-8.238 4.787-12.946 10.67-12.946 5.966 0 9.734 4.708 10.202 12.946h-20.872z" transform="translate(-374.04 -355.057)"/>
+  <path d="M747.147 586.916v26.448h4.158v-16.402c0-5.494.55-8.789 1.808-11.616 1.804-3.923 4.63-6.2 7.453-6.2 1.335 0 2.276.312 4.787 1.414v-4.08c-1.648-.863-3.452-1.336-5.021-1.336-3.924 0-6.75 2.75-9.34 9.106.079-1.024.079-1.809.079-2.355 0-1.808-.156-3.846-.629-5.654h-3.846c.473 3.534.551 4.87.551 10.675M779.99 565.492h-4.08l-.156 10.753H770.1v3.373h5.576l-.473 20.092c0 .863-.078 1.881-.078 2.983-.078 1.57-.156 2.822-.156 3.924 0 5.332 2.277 7.453 7.926 7.453 2.116 0 3.924-.234 5.961-1.02l.078-3.767c-1.803.785-3.763 1.257-5.332 1.257-3.456 0-4.319-1.335-4.319-6.438v-.863l.078-3.295.395-20.326h9.261l.078-3.373h-9.34l.235-10.753zM805.53 613.284l-.469 1.258c-1.808 5.099-2.749 6.907-4.396 8.554-1.57 1.648-3.452 2.194-7.22 2.194v3.69h1.332c2.827 0 5.57-.863 7.613-2.277 2.75-1.96 4.709-5.254 6.907-11.615l1.726-4.865 12.088-33.979h-4.24l-11.144 31.786-10.67-31.786h-4.396l12.868 37.04z" transform="translate(-374.04 -355.057)"/>
+  <path d="M600.335 356.368c-23.295 0-39.606 13.717-39.606 33.392 0 16.828 8.798 25.888 32.36 33.139 32.358 10.096 35.465 12.423 35.465 26.402 0 14.497-11.129 24.075-28.22 24.075-18.38 0-28.733-9.316-30.284-27.696h-13.46c0 25.364 15.787 39.862 43.745 39.862 25.888 0 42.455-14.755 42.455-37.793 0-7.508-1.813-13.979-5.177-18.898-5.176-7.504-12.423-11.134-34.685-17.862-22.524-6.47-28.22-10.872-28.22-21.743 0-12.428 10.358-20.45 25.627-20.45 16.572 0 25.112 7.503 26.925 23.813h13.199c-1.033-23.3-15.269-36.24-40.124-36.24" transform="translate(-374.04 -355.057)"/>
+  <path d="M392.032 529.316v-64.089c9.128 14.231 21.859 21.345 38.743 21.345 30.165 0 48.98-25.3 48.98-64.833 0-39.798-20.201-66.682-50.086-66.682-17.16 0-28.78 7.114-37.637 23.194l.037-4.208.041-15.296h-15.071l.321 170.57h14.672zm-.555-108.366c0-31.368 15.498-53.506 37.636-53.506 21.863 0 35.7 21.349 35.7 54.557 0 32.685-13.01 52.184-35.144 52.184-22.97 0-38.192-21.61-38.192-53.235M749.664 529.316v-64.089c9.128 14.231 21.859 21.345 38.743 21.345 30.165 0 48.98-25.3 48.98-64.833 0-39.798-20.201-66.682-50.086-66.682-17.16 0-28.78 7.114-37.637 23.194l.037-4.208.041-15.296h-15.066l.316 170.57h14.672zm-.555-108.366c0-31.368 15.498-53.506 37.636-53.506 21.864 0 35.7 21.349 35.7 54.557 0 32.685-13.01 52.184-35.144 52.184-22.974 0-38.192-21.61-38.192-53.235" transform="translate(-374.04 -355.057)"/>
+</svg>        </a>
+        <div
+            class="flex justify-between items-center w-3/5 border-b border-white"
+            x-data="{
+                hours: '',
+                minutes: '',
+                amPm: '',
+                weather: { temp: null, code: null, hide: false },
+
+                updateClock() {
+                    const now = new Date();
+                    let hours = now.getHours();
+                    this.amPm = hours >= 12 ? 'PM' : 'AM';
+                    hours = hours % 12;
+                    hours = hours ? hours : 12;
+                    this.hours = String(hours).padStart(2, '0');
+                    this.minutes = String(now.getMinutes()).padStart(2, '0');
+                },
+
+                weatherIcon(code) {
+                    if (code === null) return '';
+                    if (code === 0) return '☀';
+                    if (code <= 3) return '⛅';
+                    if (code <= 48) return '☁';
+                    if (code <= 67) return '🌧';
+                    if (code <= 77) return '❄';
+                    if (code <= 82) return '🌧';
+                    if (code <= 86) return '❄';
+                    return '⛈';
+                },
+
+                initWeather() {
+                    const url = `https://api.open-meteo.com/v1/forecast?latitude=47.37&longitude=8.54&current_weather=true`;
+                    window.pollApi({
+                        url,
+                        intervalMs: 10 * 60 * 1000,
+                        cacheKey: 'weather_47.37_8.54',
+                        maxAgeMs: 30 * 60 * 1000,
+                        onUpdate: (data, meta) => {
+                            if (meta.stale || !data?.current_weather) {
+                                this.weather.hide = true;
+                                return;
+                            }
+                            this.weather.hide = false;
+                            this.weather.temp = Math.round(data.current_weather.temperature);
+                            this.weather.code = data.current_weather.weathercode;
+                        },
+                    });
+                },
+
+                init() {
+                    this.updateClock();
+                    setInterval(() => { this.updateClock(); }, 1000);
+                    this.initWeather();
+                }
+            }"
+            x-init="init()"
+        >
+            <time class="uppercase">Monday 6.07.2026</time>
+            <time class="uppercase ml-4" x-text="`${hours}:${minutes} ${amPm}`"></time>
+            <p x-show="!weather.hide && weather.temp !== null" x-cloak>
+                <span x-text="weatherIcon(weather.code)"></span>
+                <span x-text="weather.temp + '°C'"></span>
+            </p>
+        </div>
+    </div>
+</nav>
+
+    <main class="flex-1 flex flex-col min-h-0 overflow-hidden">
+        <div class="block-wrapper contents">
+            <div class="block-group block-group--layout flex-1 flex flex-col gap-r-sm p-r-sm min-h-0">
+            
+        <div class="grid grid-cols-12 gap-r-sm min-h-0 flex-[2_2_0%]">
+                                                <div
+    class="flex flex-col gap-r-sm min-h-0 flex-[2_2_0%] col-span-4"
+>
+    
+                                    <section
+            class="relative layout-container min-h-0 overflow-hidden flex-[2_2_0%] col-span-9">
+                                    <div class="h-full flex flex-col justify-center overflow-hidden">
+            <div class="member grid grid-cols-2 items-center gap-r-sm py-r-md">
+            <picture>
+    <source 
+        type="image/webp" 
+        srcset="https://signage.web233.onlime.ch/img/MXwgPEBZDd/3840x0_fit/fabian-laube-web.webp?1778080511 3840w, https://signage.web233.onlime.ch/img/MXwgPEBZDd/2560x0_fit/fabian-laube-web.webp?1778080511 2560w, https://signage.web233.onlime.ch/img/MXwgPEBZDd/1920x0_fit/fabian-laube-web.webp?1778080511 1920w, https://signage.web233.onlime.ch/img/MXwgPEBZDd/1440x0_fit/fabian-laube-web.webp?1778080511 1440w, https://signage.web233.onlime.ch/img/MXwgPEBZDd/1280x0_fit/fabian-laube-web.webp?1778080511 1280w, https://signage.web233.onlime.ch/img/MXwgPEBZDd/1024x0_fit/fabian-laube-web.webp?1778080511 1024w, https://signage.web233.onlime.ch/img/MXwgPEBZDd/756x0_fit/fabian-laube-web.webp?1778080511 756w, https://signage.web233.onlime.ch/img/MXwgPEBZDd/512x0_fit/fabian-laube-web.webp?1778080511 512w"
+        sizes="(min-width: 1280px) calc(80rem / 2),
+            (min-width: 768px) calc(100vw / 2),
+            100vw"
+        >
+    <img
+        srcset="https://signage.web233.onlime.ch/img/MXwgPEBZDd/3840x0_fit/fabian-laube-web.jpg?1778080511 3840w, https://signage.web233.onlime.ch/img/MXwgPEBZDd/2560x0_fit/fabian-laube-web.jpg?1778080511 2560w, https://signage.web233.onlime.ch/img/MXwgPEBZDd/1920x0_fit/fabian-laube-web.jpg?1778080511 1920w, https://signage.web233.onlime.ch/img/MXwgPEBZDd/1440x0_fit/fabian-laube-web.jpg?1778080511 1440w, https://signage.web233.onlime.ch/img/MXwgPEBZDd/1280x0_fit/fabian-laube-web.jpg?1778080511 1280w, https://signage.web233.onlime.ch/img/MXwgPEBZDd/1024x0_fit/fabian-laube-web.jpg?1778080511 1024w, https://signage.web233.onlime.ch/img/MXwgPEBZDd/756x0_fit/fabian-laube-web.jpg?1778080511 756w, https://signage.web233.onlime.ch/img/MXwgPEBZDd/512x0_fit/fabian-laube-web.jpg?1778080511 512w"
+        sizes="(min-width: 1280px) calc(80rem / 2),
+            (min-width: 768px) calc(100vw / 2),
+            100vw"
+        src="https://signage.web233.onlime.ch/img/MXwgPEBZDd/1280x0_fit/fabian-laube-web.jpg?1778080511"
+        loading="eager"
+        width="3430"
+        height="2287"
+        alt="Leiter Bewirtschaftung"
+        
+        class="bg-cover bg-center object-cover object-center w-full aspect-square object-cover rounded-full" style="background-color: #947C66; background-image: url(&quot;https://signage.web233.onlime.ch/img/MXwgPEBZDd/3x3_fit/fabian-laube-web.jpg?1778080511&quot;);
+                    object-fit: cover;
+                    object-position: 64% 19%;"
+        >
+</picture>
+
+            <div class="member-content text-center">
+                <div class="mb-r-sm text-r-xl">Fabian Laube</div>
+
+                                <div class="mb-r-sm text-silver">Leiter Bewirtschaftung</div>
+                            
+            
+                                    <div>Tel. +41 44 625 57 23</div>
+                
+                                    <div class="underline underline-offset-6 text-silver">fabian.laube@psp.info</div>
+                            </div>
+        </div>
+    </div>
+                            </section>
+                                            <section
+            class="relative layout-container min-h-0 overflow-hidden flex-[2_2_0%] col-span-12">
+                                    <div 
+    class="md:col-span-1 tile group relative text-white text-shadow antialiased flex justify-start items-end h-full overflow-hidden bg-black transition shadow ease-out duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-light" id="block-4" x-appear="x-appear"
+>
+            <picture>
+    <source 
+        type="image/webp" 
+        srcset="https://signage.web233.onlime.ch/img/o6bpYl34MZ/3840x0_fit/png.webp?1768591757 3840w, https://signage.web233.onlime.ch/img/o6bpYl34MZ/2560x0_fit/png.webp?1768591757 2560w, https://signage.web233.onlime.ch/img/o6bpYl34MZ/1920x0_fit/png.webp?1768591757 1920w, https://signage.web233.onlime.ch/img/o6bpYl34MZ/1440x0_fit/png.webp?1768591757 1440w, https://signage.web233.onlime.ch/img/o6bpYl34MZ/1280x0_fit/png.webp?1768591757 1280w, https://signage.web233.onlime.ch/img/o6bpYl34MZ/1024x0_fit/png.webp?1768591757 1024w, https://signage.web233.onlime.ch/img/o6bpYl34MZ/756x0_fit/png.webp?1768591757 756w, https://signage.web233.onlime.ch/img/o6bpYl34MZ/512x0_fit/png.webp?1768591757 512w"
+        sizes="(min-width: 1280px) calc(100vw / 1),
+            (min-width: 768px) calc(100vw / 1),
+            100vw"
+        >
+    <img
+        srcset="https://signage.web233.onlime.ch/img/o6bpYl34MZ/3840x0_fit/png.png?1768591757 3840w, https://signage.web233.onlime.ch/img/o6bpYl34MZ/2560x0_fit/png.png?1768591757 2560w, https://signage.web233.onlime.ch/img/o6bpYl34MZ/1920x0_fit/png.png?1768591757 1920w, https://signage.web233.onlime.ch/img/o6bpYl34MZ/1440x0_fit/png.png?1768591757 1440w, https://signage.web233.onlime.ch/img/o6bpYl34MZ/1280x0_fit/png.png?1768591757 1280w, https://signage.web233.onlime.ch/img/o6bpYl34MZ/1024x0_fit/png.png?1768591757 1024w, https://signage.web233.onlime.ch/img/o6bpYl34MZ/756x0_fit/png.png?1768591757 756w, https://signage.web233.onlime.ch/img/o6bpYl34MZ/512x0_fit/png.png?1768591757 512w"
+        sizes="(min-width: 1280px) calc(100vw / 1),
+            (min-width: 768px) calc(100vw / 1),
+            100vw"
+        src="https://signage.web233.onlime.ch/img/o6bpYl34MZ/1280x0_fit/png.png?1768591757"
+        loading="lazy"
+        width="2560"
+        height="1276"
+        alt="Vom Bankgebäude zum urbanen Wahrzeichen – die Transformation an der Via Emilio Bossi"
+        
+        class="bg-cover bg-center object-cover object-center tile-image absolute inset-0 w-full h-full transition-all ease-out duration-300 group-hover:scale-[1.02] group-hover:opacity-80" style="background-color: #4E5447; background-image: url(&quot;https://signage.web233.onlime.ch/img/o6bpYl34MZ/3x3_fit/png.png?1768591757&quot;);
+                    object-fit: cover;
+                    object-position: 50% 50%;"
+        >
+</picture>
+    
+    
+            <div class="absolute top-r-sm right-r-sm tile-qr">
+            <p>Hier mehr:</p>
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGNsYXNzPSJxci1zdmcgIiBzdHlsZT0id2lkdGg6IDEwMCU7IGhlaWdodDogYXV0bzsiIHZpZXdCb3g9IjAgMCA0OSA0OSI+CjxkZWZzPjxzdHlsZT5yZWN0e3NoYXBlLXJlbmRlcmluZzpjcmlzcEVkZ2VzfTwvc3R5bGU+PC9kZWZzPgo8cGF0aCBjbGFzcz0icXItNCAiIHN0cm9rZT0idHJhbnNwYXJlbnQiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMSIgZD0iTTEzIDQgaDEgdjEgaC0xWiBNMTYgNCBoNCB2MSBoLTRaIE0yMSA0IGgyIHYxIGgtMlogTTI1IDQgaDIgdjEgaC0yWiBNMjkgNCBoMyB2MSBoLTNaIE0zMyA0IGgyIHYxIGgtMlogTTE3IDUgaDIgdjEgaC0yWiBNMjAgNSBoMSB2MSBoLTFaIE0yMyA1IGgxIHYxIGgtMVogTTI3IDUgaDQgdjEgaC00WiBNMzIgNSBoMSB2MSBoLTFaIE0zNCA1IGgzIHYxIGgtM1ogTTE2IDYgaDIgdjEgaC0yWiBNMTkgNiBoNSB2MSBoLTVaIE0yNyA2IGgzIHYxIGgtM1ogTTMzIDYgaDEgdjEgaC0xWiBNMTMgNyBoMiB2MSBoLTJaIE0xNiA3IGgzIHYxIGgtM1ogTTIwIDcgaDEgdjEgaC0xWiBNMjIgNyBoMiB2MSBoLTJaIE0yNSA3IGgxIHYxIGgtMVogTTMyIDcgaDEgdjEgaC0xWiBNMzQgNyBoMSB2MSBoLTFaIE0zNiA3IGgxIHYxIGgtMVogTTE1IDggaDMgdjEgaC0zWiBNMjEgOCBoMiB2MSBoLTJaIE0yNSA4IGgyIHYxIGgtMlogTTI5IDggaDMgdjEgaC0zWiBNMzMgOCBoMSB2MSBoLTFaIE0xMyA5IGgxIHYxIGgtMVogTTE1IDkgaDEgdjEgaC0xWiBNMTggOSBoNiB2MSBoLTZaIE0yNyA5IGgzIHYxIGgtM1ogTTMzIDkgaDEgdjEgaC0xWiBNMzUgOSBoMSB2MSBoLTFaIE0xNCAxMSBoNiB2MSBoLTZaIE0yMSAxMSBoMiB2MSBoLTJaIE0yNyAxMSBoMSB2MSBoLTFaIE0yOSAxMSBoMSB2MSBoLTFaIE0zMyAxMSBoMSB2MSBoLTFaIE0zNiAxMSBoMSB2MSBoLTFaIE0xNCAxMiBoMiB2MSBoLTJaIE0xOSAxMiBoMSB2MSBoLTFaIE0yMiAxMiBoMSB2MSBoLTFaIE0yNCAxMiBoMiB2MSBoLTJaIE0yNyAxMiBoMSB2MSBoLTFaIE0zMCAxMiBoMyB2MSBoLTNaIE0zNCAxMiBoMyB2MSBoLTNaIE00IDEzIGg0IHYxIGgtNFogTTEzIDEzIGgxIHYxIGgtMVogTTE2IDEzIGgxIHYxIGgtMVogTTE4IDEzIGgyIHYxIGgtMlogTTIxIDEzIGgxIHYxIGgtMVogTTI2IDEzIGgxIHYxIGgtMVogTTI4IDEzIGgxIHYxIGgtMVogTTMwIDEzIGgyIHYxIGgtMlogTTM0IDEzIGgxIHYxIGgtMVogTTM2IDEzIGgxIHYxIGgtMVogTTQyIDEzIGgxIHYxIGgtMVogTTQgMTQgaDEgdjEgaC0xWiBNNiAxNCBoMyB2MSBoLTNaIE0xMyAxNCBoMSB2MSBoLTFaIE0xNiAxNCBoMSB2MSBoLTFaIE0yMyAxNCBoMSB2MSBoLTFaIE0yNyAxNCBoMiB2MSBoLTJaIE0zNCAxNCBoMyB2MSBoLTNaIE0zOSAxNCBoNiB2MSBoLTZaIE00IDE1IGgyIHYxIGgtMlogTTkgMTUgaDEgdjEgaC0xWiBNMTEgMTUgaDEgdjEgaC0xWiBNMTUgMTUgaDEgdjEgaC0xWiBNMTggMTUgaDEgdjEgaC0xWiBNMjEgMTUgaDQgdjEgaC00WiBNMjggMTUgaDQgdjEgaC00WiBNMzMgMTUgaDMgdjEgaC0zWiBNMzcgMTUgaDMgdjEgaC0zWiBNNDIgMTUgaDMgdjEgaC0zWiBNNSAxNiBoMiB2MSBoLTJaIE0xNCAxNiBoMSB2MSBoLTFaIE0xNiAxNiBoMiB2MSBoLTJaIE0yMiAxNiBoNCB2MSBoLTRaIE0zMCAxNiBoMyB2MSBoLTNaIE0zNCAxNiBoMiB2MSBoLTJaIE0zNyAxNiBoNCB2MSBoLTRaIE00MyAxNiBoMiB2MSBoLTJaIE01IDE3IGg0IHYxIGgtNFogTTExIDE3IGgzIHYxIGgtM1ogTTE1IDE3IGgxIHYxIGgtMVogTTE3IDE3IGgyIHYxIGgtMlogTTIwIDE3IGgyIHYxIGgtMlogTTI2IDE3IGgxIHYxIGgtMVogTTI4IDE3IGgxIHYxIGgtMVogTTMwIDE3IGg1IHYxIGgtNVogTTQxIDE3IGgxIHYxIGgtMVogTTQzIDE3IGgxIHYxIGgtMVogTTQgMTggaDEgdjEgaC0xWiBNOCAxOCBoMiB2MSBoLTJaIE0xMiAxOCBoMiB2MSBoLTJaIE0xNSAxOCBoNCB2MSBoLTRaIE0yMSAxOCBoOCB2MSBoLThaIE0zMiAxOCBoMSB2MSBoLTFaIE0zNSAxOCBoMyB2MSBoLTNaIE0zOSAxOCBoMSB2MSBoLTFaIE00MiAxOCBoMyB2MSBoLTNaIE02IDE5IGgyIHYxIGgtMlogTTE0IDE5IGgyIHYxIGgtMlogTTE3IDE5IGgxIHYxIGgtMVogTTIwIDE5IGgyIHYxIGgtMlogTTI0IDE5IGgxIHYxIGgtMVogTTI2IDE5IGgyIHYxIGgtMlogTTI5IDE5IGgxIHYxIGgtMVogTTMxIDE5IGgxIHYxIGgtMVogTTMzIDE5IGgyIHYxIGgtMlogTTM3IDE5IGgxIHYxIGgtMVogTTQyIDE5IGgxIHYxIGgtMVogTTQ0IDE5IGgxIHYxIGgtMVogTTYgMjAgaDEgdjEgaC0xWiBNOSAyMCBoMSB2MSBoLTFaIE0xMSAyMCBoMSB2MSBoLTFaIE0xMyAyMCBoMSB2MSBoLTFaIE0xNSAyMCBoMSB2MSBoLTFaIE0yMiAyMCBoNCB2MSBoLTRaIE0zMSAyMCBoMiB2MSBoLTJaIE0zNCAyMCBoMSB2MSBoLTFaIE0zNyAyMCBoMiB2MSBoLTJaIE00MCAyMCBoMiB2MSBoLTJaIE00MyAyMCBoMiB2MSBoLTJaIE00IDIxIGgxIHYxIGgtMVogTTYgMjEgaDMgdjEgaC0zWiBNMTEgMjEgaDIgdjEgaC0yWiBNMTYgMjEgaDQgdjEgaC00WiBNMjUgMjEgaDIgdjEgaC0yWiBNMjggMjEgaDEgdjEgaC0xWiBNMzAgMjEgaDUgdjEgaC01WiBNNDEgMjEgaDIgdjEgaC0yWiBNNCAyMiBoMSB2MSBoLTFaIE02IDIyIGgxIHYxIGgtMVogTTExIDIyIGgxIHYxIGgtMVogTTEzIDIyIGgxIHYxIGgtMVogTTE1IDIyIGg0IHYxIGgtNFogTTIxIDIyIGgxIHYxIGgtMVogTTIzIDIyIGgyIHYxIGgtMlogTTI3IDIyIGgxIHYxIGgtMVogTTI5IDIyIGgxIHYxIGgtMVogTTM1IDIyIGgxIHYxIGgtMVogTTM3IDIyIGg4IHYxIGgtOFogTTQgMjMgaDEgdjEgaC0xWiBNNiAyMyBoMiB2MSBoLTJaIE0xMyAyMyBoMSB2MSBoLTFaIE0xNSAyMyBoMSB2MSBoLTFaIE0xNyAyMyBoMSB2MSBoLTFaIE0yMSAyMyBoMiB2MSBoLTJaIE0yNCAyMyBoMSB2MSBoLTFaIE0yOCAyMyBoMiB2MSBoLTJaIE0zMSAyMyBoMSB2MSBoLTFaIE0zMyAyMyBoMSB2MSBoLTFaIE0zNiAyMyBoNCB2MSBoLTRaIE00MiAyMyBoMSB2MSBoLTFaIE00IDI0IGg0IHYxIGgtNFogTTEzIDI0IGgzIHYxIGgtM1ogTTE3IDI0IGg1IHYxIGgtNVogTTIzIDI0IGgzIHYxIGgtM1ogTTI3IDI0IGgxIHYxIGgtMVogTTMxIDI0IGgyIHYxIGgtMlogTTM0IDI0IGgzIHYxIGgtM1ogTTM4IDI0IGgzIHYxIGgtM1ogTTQgMjUgaDEgdjEgaC0xWiBNNiAyNSBoMSB2MSBoLTFaIE05IDI1IGgxIHYxIGgtMVogTTExIDI1IGgyIHYxIGgtMlogTTE0IDI1IGgzIHYxIGgtM1ogTTIxIDI1IGgxIHYxIGgtMVogTTI2IDI1IGgxIHYxIGgtMVogTTI4IDI1IGg0IHYxIGgtNFogTTMzIDI1IGgxIHYxIGgtMVogTTQxIDI1IGgzIHYxIGgtM1ogTTQgMjYgaDIgdjEgaC0yWiBNOSAyNiBoMSB2MSBoLTFaIE0xMSAyNiBoMyB2MSBoLTNaIE0xOSAyNiBoNSB2MSBoLTVaIE0yNiAyNiBoMiB2MSBoLTJaIE0zMCAyNiBoMSB2MSBoLTFaIE0zMyAyNiBoMSB2MSBoLTFaIE0zNSAyNiBoMSB2MSBoLTFaIE0zOCAyNiBoMSB2MSBoLTFaIE00MyAyNiBoMiB2MSBoLTJaIE01IDI3IGg0IHYxIGgtNFogTTExIDI3IGgxIHYxIGgtMVogTTEzIDI3IGgyIHYxIGgtMlogTTE2IDI3IGg0IHYxIGgtNFogTTIxIDI3IGgzIHYxIGgtM1ogTTI4IDI3IGg0IHYxIGgtNFogTTMzIDI3IGgxIHYxIGgtMVogTTM1IDI3IGg0IHYxIGgtNFogTTQwIDI3IGgxIHYxIGgtMVogTTQyIDI3IGgxIHYxIGgtMVogTTQ0IDI3IGgxIHYxIGgtMVogTTQgMjggaDEgdjEgaC0xWiBNNiAyOCBoMiB2MSBoLTJaIE0xMSAyOCBoMiB2MSBoLTJaIE0xOSAyOCBoMiB2MSBoLTJaIE0yNCAyOCBoMiB2MSBoLTJaIE0yNyAyOCBoMiB2MSBoLTJaIE0zMSAyOCBoMiB2MSBoLTJaIE0zNSAyOCBoMSB2MSBoLTFaIE0zNyAyOCBoNSB2MSBoLTVaIE03IDI5IGgzIHYxIGgtM1ogTTExIDI5IGgyIHYxIGgtMlogTTE0IDI5IGgxIHYxIGgtMVogTTE2IDI5IGgxIHYxIGgtMVogTTE4IDI5IGgzIHYxIGgtM1ogTTI1IDI5IGgyIHYxIGgtMlogTTI4IDI5IGg0IHYxIGgtNFogTTQxIDI5IGgzIHYxIGgtM1ogTTQgMzAgaDIgdjEgaC0yWiBNNyAzMCBoMSB2MSBoLTFaIE05IDMwIGgxIHYxIGgtMVogTTExIDMwIGgyIHYxIGgtMlogTTE1IDMwIGgyIHYxIGgtMlogTTIyIDMwIGgyIHYxIGgtMlogTTI2IDMwIGg0IHYxIGgtNFogTTMyIDMwIGg0IHYxIGgtNFogTTM3IDMwIGgxIHYxIGgtMVogTTQwIDMwIGgxIHYxIGgtMVogTTQzIDMwIGgyIHYxIGgtMlogTTQgMzEgaDEgdjEgaC0xWiBNNiAzMSBoMiB2MSBoLTJaIE0xMSAzMSBoMSB2MSBoLTFaIE0xNiAzMSBoMSB2MSBoLTFaIE0xOCAzMSBoMSB2MSBoLTFaIE0yMyAzMSBoMSB2MSBoLTFaIE0yOCAzMSBoNCB2MSBoLTRaIE0zMyAzMSBoNiB2MSBoLTZaIE00MCAzMSBoMyB2MSBoLTNaIE04IDMyIGgxIHYxIGgtMVogTTExIDMyIGg3IHYxIGgtN1ogTTE5IDMyIGgxIHYxIGgtMVogTTIxIDMyIGg1IHYxIGgtNVogTTI4IDMyIGgxIHYxIGgtMVogTTMyIDMyIGgxIHYxIGgtMVogTTM0IDMyIGg3IHYxIGgtN1ogTTQ0IDMyIGgxIHYxIGgtMVogTTUgMzMgaDMgdjEgaC0zWiBNOSAzMyBoMSB2MSBoLTFaIE0xNSAzMyBoMSB2MSBoLTFaIE0xNyAzMyBoMiB2MSBoLTJaIE0yMCAzMyBoMSB2MSBoLTFaIE0yNCAzMyBoMyB2MSBoLTNaIE0yOCAzMyBoMSB2MSBoLTFaIE0zMCAzMyBoMiB2MSBoLTJaIE0zNyAzMyBoMSB2MSBoLTFaIE0zOSAzMyBoMSB2MSBoLTFaIE00MSAzMyBoMSB2MSBoLTFaIE01IDM0IGgyIHYxIGgtMlogTTExIDM0IGgxIHYxIGgtMVogTTE0IDM0IGg0IHYxIGgtNFogTTIxIDM0IGgzIHYxIGgtM1ogTTI1IDM0IGgxIHYxIGgtMVogTTI3IDM0IGgzIHYxIGgtM1ogTTM0IDM0IGgxMSB2MSBoLTExWiBNNSAzNSBoMSB2MSBoLTFaIE03IDM1IGgyIHYxIGgtMlogTTExIDM1IGgyIHYxIGgtMlogTTE1IDM1IGgxIHYxIGgtMVogTTE3IDM1IGgxIHYxIGgtMVogTTIwIDM1IGgzIHYxIGgtM1ogTTI2IDM1IGg1IHYxIGgtNVogTTMyIDM1IGgyIHYxIGgtMlogTTM2IDM1IGgxIHYxIGgtMVogTTM4IDM1IGgxIHYxIGgtMVogTTQwIDM1IGgxIHYxIGgtMVogTTQyIDM1IGgxIHYxIGgtMVogTTUgMzYgaDEgdjEgaC0xWiBNNyAzNiBoMyB2MSBoLTNaIE0xNSAzNiBoMiB2MSBoLTJaIE0yMCAzNiBoMSB2MSBoLTFaIE0yMiAzNiBoMSB2MSBoLTFaIE0yNCAzNiBoMiB2MSBoLTJaIE0zMSAzNiBoMiB2MSBoLTJaIE0zNCAzNiBoMiB2MSBoLTJaIE00MSAzNiBoMSB2MSBoLTFaIE00MyAzNiBoMiB2MSBoLTJaIE0xMyAzNyBoMiB2MSBoLTJaIE0xNiAzNyBoNCB2MSBoLTRaIE0yMSAzNyBoMiB2MSBoLTJaIE0yNSAzNyBoMiB2MSBoLTJaIE0yOSAzNyBoMyB2MSBoLTNaIE0zMyAzNyBoMSB2MSBoLTFaIE0zNSAzNyBoMSB2MSBoLTFaIE00MSAzNyBoMSB2MSBoLTFaIE00MyAzNyBoMSB2MSBoLTFaIE0xMyAzOCBoMSB2MSBoLTFaIE0xNSAzOCBoNCB2MSBoLTRaIE0yMSAzOCBoMSB2MSBoLTFaIE0yMyAzOCBoMSB2MSBoLTFaIE0yNyAzOCBoMyB2MSBoLTNaIE0zMiAzOCBoMiB2MSBoLTJaIE00MSAzOCBoMSB2MSBoLTFaIE00MyAzOCBoMiB2MSBoLTJaIE0xNCAzOSBoNCB2MSBoLTRaIE0yMSAzOSBoMiB2MSBoLTJaIE0yNiAzOSBoMSB2MSBoLTFaIE0yOCAzOSBoMiB2MSBoLTJaIE0zMSAzOSBoMSB2MSBoLTFaIE0zMyAzOSBoMiB2MSBoLTJaIE00MSAzOSBoMiB2MSBoLTJaIE00NCAzOSBoMSB2MSBoLTFaIE0xNCA0MCBoMSB2MSBoLTFaIE0xNyA0MCBoMiB2MSBoLTJaIE0yMCA0MCBoMiB2MSBoLTJaIE0yMyA0MCBoMyB2MSBoLTNaIE0yNyA0MCBoMSB2MSBoLTFaIE0zMSA0MCBoMiB2MSBoLTJaIE0zNCA0MCBoMiB2MSBoLTJaIE00MSA0MCBoMSB2MSBoLTFaIE0xNCA0MSBoMyB2MSBoLTNaIE0yMiA0MSBoMSB2MSBoLTFaIE0yNSA0MSBoMiB2MSBoLTJaIE0zMSA0MSBoMSB2MSBoLTFaIE0zNCA0MSBoMSB2MSBoLTFaIE0zNyA0MSBoNCB2MSBoLTRaIE00MiA0MSBoMiB2MSBoLTJaIE0xMyA0MiBoMiB2MSBoLTJaIE0xOSA0MiBoMiB2MSBoLTJaIE0yMyA0MiBoMSB2MSBoLTFaIE0yNSA0MiBoMyB2MSBoLTNaIE0zMiA0MiBoMiB2MSBoLTJaIE0zNSA0MiBoMiB2MSBoLTJaIE0zOSA0MiBoMSB2MSBoLTFaIE00MiA0MiBoMyB2MSBoLTNaIE0xNCA0MyBoMSB2MSBoLTFaIE0xNiA0MyBoNCB2MSBoLTRaIE0yMSA0MyBoMSB2MSBoLTFaIE0yMyA0MyBoMiB2MSBoLTJaIE0yOSA0MyBoMSB2MSBoLTFaIE0zMyA0MyBoMiB2MSBoLTJaIE0zNyA0MyBoMiB2MSBoLTJaIE00MCA0MyBoMSB2MSBoLTFaIE00MiA0MyBoMSB2MSBoLTFaIE00NCA0MyBoMSB2MSBoLTFaIE0xNCA0NCBoMSB2MSBoLTFaIE0xOCA0NCBoMiB2MSBoLTJaIE0yMiA0NCBoMSB2MSBoLTFaIE0yNCA0NCBoMiB2MSBoLTJaIE0yNyA0NCBoMSB2MSBoLTFaIE0zMiA0NCBoMSB2MSBoLTFaIE0zNCA0NCBoMSB2MSBoLTFaIE0zNiA0NCBoMSB2MSBoLTFaIE0zOCA0NCBoMSB2MSBoLTFaIE00MCA0NCBoMiB2MSBoLTJaIE00MyA0NCBoMiB2MSBoLTJaICIgLz48cGF0aCBjbGFzcz0icXItNiAiIHN0cm9rZT0idHJhbnNwYXJlbnQiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMSIgZD0iTTUgNSBoNSB2MSBoLTVaIE0zOSA1IGg1IHYxIGgtNVogTTUgNiBoMSB2MSBoLTFaIE05IDYgaDEgdjEgaC0xWiBNMzkgNiBoMSB2MSBoLTFaIE00MyA2IGgxIHYxIGgtMVogTTUgNyBoMSB2MSBoLTFaIE05IDcgaDEgdjEgaC0xWiBNMzkgNyBoMSB2MSBoLTFaIE00MyA3IGgxIHYxIGgtMVogTTUgOCBoMSB2MSBoLTFaIE05IDggaDEgdjEgaC0xWiBNMzkgOCBoMSB2MSBoLTFaIE00MyA4IGgxIHYxIGgtMVogTTUgOSBoNSB2MSBoLTVaIE0zOSA5IGg1IHYxIGgtNVogTTUgMzkgaDUgdjEgaC01WiBNNSA0MCBoMSB2MSBoLTFaIE05IDQwIGgxIHYxIGgtMVogTTUgNDEgaDEgdjEgaC0xWiBNOSA0MSBoMSB2MSBoLTFaIE01IDQyIGgxIHYxIGgtMVogTTkgNDIgaDEgdjEgaC0xWiBNNSA0MyBoNSB2MSBoLTVaICIgLz48cGF0aCBjbGFzcz0icXItOCAiIHN0cm9rZT0idHJhbnNwYXJlbnQiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMSIgZD0iTTExIDQgaDEgdjEgaC0xWiBNMzcgNCBoMSB2MSBoLTFaIE0xMSA1IGgxIHYxIGgtMVogTTM3IDUgaDEgdjEgaC0xWiBNMTEgNiBoMSB2MSBoLTFaIE0zNyA2IGgxIHYxIGgtMVogTTExIDcgaDEgdjEgaC0xWiBNMzcgNyBoMSB2MSBoLTFaIE0xMSA4IGgxIHYxIGgtMVogTTM3IDggaDEgdjEgaC0xWiBNMTEgOSBoMSB2MSBoLTFaIE0zNyA5IGgxIHYxIGgtMVogTTExIDEwIGgxIHYxIGgtMVogTTM3IDEwIGgxIHYxIGgtMVogTTQgMTEgaDggdjEgaC04WiBNMzcgMTEgaDggdjEgaC04WiBNNCAzNyBoOCB2MSBoLThaIE0xMSAzOCBoMSB2MSBoLTFaIE0xMSAzOSBoMSB2MSBoLTFaIE0xMSA0MCBoMSB2MSBoLTFaIE0xMSA0MSBoMSB2MSBoLTFaIE0xMSA0MiBoMSB2MSBoLTFaIE0xMSA0MyBoMSB2MSBoLTFaIE0xMSA0NCBoMSB2MSBoLTFaICIgLz48cGF0aCBjbGFzcz0icXItMTAgIiBzdHJva2U9InRyYW5zcGFyZW50IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjEiIGQ9Ik0zNyAzNyBoMyB2MSBoLTNaIE0zNyAzOCBoMSB2MSBoLTFaIE0zOSAzOCBoMSB2MSBoLTFaIE0zNyAzOSBoMyB2MSBoLTNaICIgLz48cGF0aCBjbGFzcz0icXItMTIgIiBzdHJva2U9InRyYW5zcGFyZW50IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjEiIGQ9Ik0xMyAxMCBoMSB2MSBoLTFaIE0xNSAxMCBoMSB2MSBoLTFaIE0xNyAxMCBoMSB2MSBoLTFaIE0xOSAxMCBoMSB2MSBoLTFaIE0yMSAxMCBoMSB2MSBoLTFaIE0yMyAxMCBoMSB2MSBoLTFaIE0yNSAxMCBoMSB2MSBoLTFaIE0yNyAxMCBoMSB2MSBoLTFaIE0yOSAxMCBoMSB2MSBoLTFaIE0zMSAxMCBoMSB2MSBoLTFaIE0zMyAxMCBoMSB2MSBoLTFaIE0zNSAxMCBoMSB2MSBoLTFaIE0xMCAxMyBoMSB2MSBoLTFaIE0xMCAxNSBoMSB2MSBoLTFaIE0xMCAxNyBoMSB2MSBoLTFaIE0xMCAxOSBoMSB2MSBoLTFaIE0xMCAyMSBoMSB2MSBoLTFaIE0xMCAyMyBoMSB2MSBoLTFaIE0xMCAyNSBoMSB2MSBoLTFaIE0xMCAyNyBoMSB2MSBoLTFaIE0xMCAyOSBoMSB2MSBoLTFaIE0xMCAzMSBoMSB2MSBoLTFaIE0xMCAzMyBoMSB2MSBoLTFaIE0xMCAzNSBoMSB2MSBoLTFaICIgLz48cGF0aCBjbGFzcz0icXItMTQgIiBzdHJva2U9InRyYW5zcGFyZW50IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjEiIGQ9Ik0xMiA0IGgxIHYxIGgtMVogTTEyIDYgaDEgdjEgaC0xWiBNMTIgOCBoMSB2MSBoLTFaIE0xMiAxMSBoMSB2MSBoLTFaIE05IDEyIGgxIHYxIGgtMVogTTM4IDEyIGgxIHYxIGgtMVogTTQwIDEyIGgxIHYxIGgtMVogTTQyIDEyIGgxIHYxIGgtMVogTTQ0IDEyIGgxIHYxIGgtMVogTTEyIDM5IGgxIHYxIGgtMVogIiAvPjxwYXRoIGNsYXNzPSJxci0xOCAiIHN0cm9rZT0idHJhbnNwYXJlbnQiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMSIgZD0iTTAgMCBoNDkgdjEgaC00OVogTTAgMSBoNDkgdjEgaC00OVogTTAgMiBoNDkgdjEgaC00OVogTTAgMyBoNDkgdjEgaC00OVogTTAgNCBoNCB2MSBoLTRaIE00NSA0IGg0IHYxIGgtNFogTTAgNSBoNCB2MSBoLTRaIE00NSA1IGg0IHYxIGgtNFogTTAgNiBoNCB2MSBoLTRaIE00NSA2IGg0IHYxIGgtNFogTTAgNyBoNCB2MSBoLTRaIE00NSA3IGg0IHYxIGgtNFogTTAgOCBoNCB2MSBoLTRaIE00NSA4IGg0IHYxIGgtNFogTTAgOSBoNCB2MSBoLTRaIE00NSA5IGg0IHYxIGgtNFogTTAgMTAgaDQgdjEgaC00WiBNNDUgMTAgaDQgdjEgaC00WiBNMCAxMSBoNCB2MSBoLTRaIE00NSAxMSBoNCB2MSBoLTRaIE0wIDEyIGg0IHYxIGgtNFogTTQ1IDEyIGg0IHYxIGgtNFogTTAgMTMgaDQgdjEgaC00WiBNNDUgMTMgaDQgdjEgaC00WiBNMCAxNCBoNCB2MSBoLTRaIE00NSAxNCBoNCB2MSBoLTRaIE0wIDE1IGg0IHYxIGgtNFogTTQ1IDE1IGg0IHYxIGgtNFogTTAgMTYgaDQgdjEgaC00WiBNNDUgMTYgaDQgdjEgaC00WiBNMCAxNyBoNCB2MSBoLTRaIE00NSAxNyBoNCB2MSBoLTRaIE0wIDE4IGg0IHYxIGgtNFogTTQ1IDE4IGg0IHYxIGgtNFogTTAgMTkgaDQgdjEgaC00WiBNNDUgMTkgaDQgdjEgaC00WiBNMCAyMCBoNCB2MSBoLTRaIE00NSAyMCBoNCB2MSBoLTRaIE0wIDIxIGg0IHYxIGgtNFogTTQ1IDIxIGg0IHYxIGgtNFogTTAgMjIgaDQgdjEgaC00WiBNNDUgMjIgaDQgdjEgaC00WiBNMCAyMyBoNCB2MSBoLTRaIE00NSAyMyBoNCB2MSBoLTRaIE0wIDI0IGg0IHYxIGgtNFogTTQ1IDI0IGg0IHYxIGgtNFogTTAgMjUgaDQgdjEgaC00WiBNNDUgMjUgaDQgdjEgaC00WiBNMCAyNiBoNCB2MSBoLTRaIE00NSAyNiBoNCB2MSBoLTRaIE0wIDI3IGg0IHYxIGgtNFogTTQ1IDI3IGg0IHYxIGgtNFogTTAgMjggaDQgdjEgaC00WiBNNDUgMjggaDQgdjEgaC00WiBNMCAyOSBoNCB2MSBoLTRaIE00NSAyOSBoNCB2MSBoLTRaIE0wIDMwIGg0IHYxIGgtNFogTTQ1IDMwIGg0IHYxIGgtNFogTTAgMzEgaDQgdjEgaC00WiBNNDUgMzEgaDQgdjEgaC00WiBNMCAzMiBoNCB2MSBoLTRaIE00NSAzMiBoNCB2MSBoLTRaIE0wIDMzIGg0IHYxIGgtNFogTTQ1IDMzIGg0IHYxIGgtNFogTTAgMzQgaDQgdjEgaC00WiBNNDUgMzQgaDQgdjEgaC00WiBNMCAzNSBoNCB2MSBoLTRaIE00NSAzNSBoNCB2MSBoLTRaIE0wIDM2IGg0IHYxIGgtNFogTTQ1IDM2IGg0IHYxIGgtNFogTTAgMzcgaDQgdjEgaC00WiBNNDUgMzcgaDQgdjEgaC00WiBNMCAzOCBoNCB2MSBoLTRaIE00NSAzOCBoNCB2MSBoLTRaIE0wIDM5IGg0IHYxIGgtNFogTTQ1IDM5IGg0IHYxIGgtNFogTTAgNDAgaDQgdjEgaC00WiBNNDUgNDAgaDQgdjEgaC00WiBNMCA0MSBoNCB2MSBoLTRaIE00NSA0MSBoNCB2MSBoLTRaIE0wIDQyIGg0IHYxIGgtNFogTTQ1IDQyIGg0IHYxIGgtNFogTTAgNDMgaDQgdjEgaC00WiBNNDUgNDMgaDQgdjEgaC00WiBNMCA0NCBoNCB2MSBoLTRaIE00NSA0NCBoNCB2MSBoLTRaIE0wIDQ1IGg0OSB2MSBoLTQ5WiBNMCA0NiBoNDkgdjEgaC00OVogTTAgNDcgaDQ5IHYxIGgtNDlaIE0wIDQ4IGg0OSB2MSBoLTQ5WiAiIC8+PHBhdGggY2xhc3M9InFyLTUxMiAiIHN0cm9rZT0idHJhbnNwYXJlbnQiIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iMSIgZD0iTTEyIDM3IGgxIHYxIGgtMVogIiAvPjxwYXRoIGNsYXNzPSJxci0xMDI0ICIgc3Ryb2tlPSJ0cmFuc3BhcmVudCIgZmlsbD0iIzAwMCIgZmlsbC1vcGFjaXR5PSIxIiBkPSJNMTQgNCBoMiB2MSBoLTJaIE0yMCA0IGgxIHYxIGgtMVogTTIzIDQgaDIgdjEgaC0yWiBNMjcgNCBoMiB2MSBoLTJaIE0zMiA0IGgxIHYxIGgtMVogTTM1IDQgaDIgdjEgaC0yWiBNMTMgNSBoNCB2MSBoLTRaIE0xOSA1IGgxIHYxIGgtMVogTTIxIDUgaDIgdjEgaC0yWiBNMjQgNSBoMyB2MSBoLTNaIE0zMSA1IGgxIHYxIGgtMVogTTMzIDUgaDEgdjEgaC0xWiBNMTMgNiBoMyB2MSBoLTNaIE0xOCA2IGgxIHYxIGgtMVogTTI0IDYgaDMgdjEgaC0zWiBNMzAgNiBoMyB2MSBoLTNaIE0zNCA2IGgzIHYxIGgtM1ogTTE1IDcgaDEgdjEgaC0xWiBNMTkgNyBoMSB2MSBoLTFaIE0yMSA3IGgxIHYxIGgtMVogTTI0IDcgaDEgdjEgaC0xWiBNMjYgNyBoNiB2MSBoLTZaIE0zMyA3IGgxIHYxIGgtMVogTTM1IDcgaDEgdjEgaC0xWiBNMTMgOCBoMiB2MSBoLTJaIE0xOCA4IGgzIHYxIGgtM1ogTTIzIDggaDIgdjEgaC0yWiBNMjcgOCBoMiB2MSBoLTJaIE0zMiA4IGgxIHYxIGgtMVogTTM0IDggaDMgdjEgaC0zWiBNMTQgOSBoMSB2MSBoLTFaIE0xNiA5IGgyIHYxIGgtMlogTTI0IDkgaDMgdjEgaC0zWiBNMzAgOSBoMyB2MSBoLTNaIE0zNCA5IGgxIHYxIGgtMVogTTM2IDkgaDEgdjEgaC0xWiBNMTMgMTEgaDEgdjEgaC0xWiBNMjAgMTEgaDEgdjEgaC0xWiBNMjMgMTEgaDQgdjEgaC00WiBNMjggMTEgaDEgdjEgaC0xWiBNMzAgMTEgaDMgdjEgaC0zWiBNMzQgMTEgaDIgdjEgaC0yWiBNMTMgMTIgaDEgdjEgaC0xWiBNMTYgMTIgaDMgdjEgaC0zWiBNMjAgMTIgaDIgdjEgaC0yWiBNMjMgMTIgaDEgdjEgaC0xWiBNMjYgMTIgaDEgdjEgaC0xWiBNMjggMTIgaDIgdjEgaC0yWiBNMzMgMTIgaDEgdjEgaC0xWiBNOCAxMyBoMiB2MSBoLTJaIE0xMSAxMyBoMiB2MSBoLTJaIE0xNCAxMyBoMiB2MSBoLTJaIE0xNyAxMyBoMSB2MSBoLTFaIE0yMCAxMyBoMSB2MSBoLTFaIE0yMiAxMyBoNCB2MSBoLTRaIE0yNyAxMyBoMSB2MSBoLTFaIE0yOSAxMyBoMSB2MSBoLTFaIE0zMiAxMyBoMiB2MSBoLTJaIE0zNSAxMyBoMSB2MSBoLTFaIE0zNyAxMyBoNSB2MSBoLTVaIE00MyAxMyBoMiB2MSBoLTJaIE01IDE0IGgxIHYxIGgtMVogTTkgMTQgaDEgdjEgaC0xWiBNMTEgMTQgaDIgdjEgaC0yWiBNMTQgMTQgaDIgdjEgaC0yWiBNMTcgMTQgaDYgdjEgaC02WiBNMjQgMTQgaDMgdjEgaC0zWiBNMjkgMTQgaDUgdjEgaC01WiBNMzcgMTQgaDIgdjEgaC0yWiBNNiAxNSBoMyB2MSBoLTNaIE0xMiAxNSBoMyB2MSBoLTNaIE0xNiAxNSBoMiB2MSBoLTJaIE0xOSAxNSBoMiB2MSBoLTJaIE0yNSAxNSBoMyB2MSBoLTNaIE0zMiAxNSBoMSB2MSBoLTFaIE0zNiAxNSBoMSB2MSBoLTFaIE00MCAxNSBoMiB2MSBoLTJaIE00IDE2IGgxIHYxIGgtMVogTTcgMTYgaDMgdjEgaC0zWiBNMTEgMTYgaDMgdjEgaC0zWiBNMTUgMTYgaDEgdjEgaC0xWiBNMTggMTYgaDQgdjEgaC00WiBNMjYgMTYgaDQgdjEgaC00WiBNMzMgMTYgaDEgdjEgaC0xWiBNMzYgMTYgaDEgdjEgaC0xWiBNNDEgMTYgaDIgdjEgaC0yWiBNNCAxNyBoMSB2MSBoLTFaIE05IDE3IGgxIHYxIGgtMVogTTE0IDE3IGgxIHYxIGgtMVogTTE2IDE3IGgxIHYxIGgtMVogTTE5IDE3IGgxIHYxIGgtMVogTTIyIDE3IGg0IHYxIGgtNFogTTI3IDE3IGgxIHYxIGgtMVogTTI5IDE3IGgxIHYxIGgtMVogTTM1IDE3IGg2IHYxIGgtNlogTTQyIDE3IGgxIHYxIGgtMVogTTQ0IDE3IGgxIHYxIGgtMVogTTUgMTggaDMgdjEgaC0zWiBNMTEgMTggaDEgdjEgaC0xWiBNMTQgMTggaDEgdjEgaC0xWiBNMTkgMTggaDIgdjEgaC0yWiBNMjkgMTggaDMgdjEgaC0zWiBNMzMgMTggaDIgdjEgaC0yWiBNMzggMTggaDEgdjEgaC0xWiBNNDAgMTggaDIgdjEgaC0yWiBNNCAxOSBoMiB2MSBoLTJaIE04IDE5IGgyIHYxIGgtMlogTTExIDE5IGgzIHYxIGgtM1ogTTE2IDE5IGgxIHYxIGgtMVogTTE4IDE5IGgyIHYxIGgtMlogTTIyIDE5IGgyIHYxIGgtMlogTTI1IDE5IGgxIHYxIGgtMVogTTI4IDE5IGgxIHYxIGgtMVogTTMwIDE5IGgxIHYxIGgtMVogTTMyIDE5IGgxIHYxIGgtMVogTTM1IDE5IGgyIHYxIGgtMlogTTM4IDE5IGg0IHYxIGgtNFogTTQzIDE5IGgxIHYxIGgtMVogTTQgMjAgaDIgdjEgaC0yWiBNNyAyMCBoMiB2MSBoLTJaIE0xMiAyMCBoMSB2MSBoLTFaIE0xNCAyMCBoMSB2MSBoLTFaIE0xNiAyMCBoNiB2MSBoLTZaIE0yNiAyMCBoNSB2MSBoLTVaIE0zMyAyMCBoMSB2MSBoLTFaIE0zNSAyMCBoMiB2MSBoLTJaIE0zOSAyMCBoMSB2MSBoLTFaIE00MiAyMCBoMSB2MSBoLTFaIE01IDIxIGgxIHYxIGgtMVogTTkgMjEgaDEgdjEgaC0xWiBNMTMgMjEgaDMgdjEgaC0zWiBNMjAgMjEgaDUgdjEgaC01WiBNMjcgMjEgaDEgdjEgaC0xWiBNMjkgMjEgaDEgdjEgaC0xWiBNMzUgMjEgaDYgdjEgaC02WiBNNDMgMjEgaDIgdjEgaC0yWiBNNSAyMiBoMSB2MSBoLTFaIE03IDIyIGgzIHYxIGgtM1ogTTEyIDIyIGgxIHYxIGgtMVogTTE0IDIyIGgxIHYxIGgtMVogTTE5IDIyIGgyIHYxIGgtMlogTTIyIDIyIGgxIHYxIGgtMVogTTI1IDIyIGgyIHYxIGgtMlogTTI4IDIyIGgxIHYxIGgtMVogTTMwIDIyIGg1IHYxIGgtNVogTTM2IDIyIGgxIHYxIGgtMVogTTUgMjMgaDEgdjEgaC0xWiBNOCAyMyBoMiB2MSBoLTJaIE0xMSAyMyBoMiB2MSBoLTJaIE0xNCAyMyBoMSB2MSBoLTFaIE0xNiAyMyBoMSB2MSBoLTFaIE0xOCAyMyBoMyB2MSBoLTNaIE0yMyAyMyBoMSB2MSBoLTFaIE0yNSAyMyBoMyB2MSBoLTNaIE0zMCAyMyBoMSB2MSBoLTFaIE0zMiAyMyBoMSB2MSBoLTFaIE0zNCAyMyBoMiB2MSBoLTJaIE00MCAyMyBoMiB2MSBoLTJaIE00MyAyMyBoMiB2MSBoLTJaIE04IDI0IGgyIHYxIGgtMlogTTExIDI0IGgyIHYxIGgtMlogTTE2IDI0IGgxIHYxIGgtMVogTTIyIDI0IGgxIHYxIGgtMVogTTI2IDI0IGgxIHYxIGgtMVogTTI4IDI0IGgzIHYxIGgtM1ogTTMzIDI0IGgxIHYxIGgtMVogTTM3IDI0IGgxIHYxIGgtMVogTTQxIDI0IGg0IHYxIGgtNFogTTUgMjUgaDEgdjEgaC0xWiBNNyAyNSBoMiB2MSBoLTJaIE0xMyAyNSBoMSB2MSBoLTFaIE0xNyAyNSBoNCB2MSBoLTRaIE0yMiAyNSBoNCB2MSBoLTRaIE0yNyAyNSBoMSB2MSBoLTFaIE0zMiAyNSBoMSB2MSBoLTFaIE0zNCAyNSBoNyB2MSBoLTdaIE00NCAyNSBoMSB2MSBoLTFaIE02IDI2IGgzIHYxIGgtM1ogTTE0IDI2IGg1IHYxIGgtNVogTTI0IDI2IGgyIHYxIGgtMlogTTI4IDI2IGgyIHYxIGgtMlogTTMxIDI2IGgyIHYxIGgtMlogTTM0IDI2IGgxIHYxIGgtMVogTTM2IDI2IGgyIHYxIGgtMlogTTM5IDI2IGg0IHYxIGgtNFogTTQgMjcgaDEgdjEgaC0xWiBNOSAyNyBoMSB2MSBoLTFaIE0xMiAyNyBoMSB2MSBoLTFaIE0xNSAyNyBoMSB2MSBoLTFaIE0yMCAyNyBoMSB2MSBoLTFaIE0yNCAyNyBoNCB2MSBoLTRaIE0zMiAyNyBoMSB2MSBoLTFaIE0zNCAyNyBoMSB2MSBoLTFaIE0zOSAyNyBoMSB2MSBoLTFaIE00MSAyNyBoMSB2MSBoLTFaIE00MyAyNyBoMSB2MSBoLTFaIE01IDI4IGgxIHYxIGgtMVogTTggMjggaDIgdjEgaC0yWiBNMTMgMjggaDYgdjEgaC02WiBNMjEgMjggaDMgdjEgaC0zWiBNMjYgMjggaDEgdjEgaC0xWiBNMjkgMjggaDIgdjEgaC0yWiBNMzMgMjggaDIgdjEgaC0yWiBNMzYgMjggaDEgdjEgaC0xWiBNNDIgMjggaDMgdjEgaC0zWiBNNCAyOSBoMyB2MSBoLTNaIE0xMyAyOSBoMSB2MSBoLTFaIE0xNSAyOSBoMSB2MSBoLTFaIE0xNyAyOSBoMSB2MSBoLTFaIE0yMSAyOSBoNCB2MSBoLTRaIE0yNyAyOSBoMSB2MSBoLTFaIE0zMiAyOSBoOSB2MSBoLTlaIE00NCAyOSBoMSB2MSBoLTFaIE02IDMwIGgxIHYxIGgtMVogTTggMzAgaDEgdjEgaC0xWiBNMTMgMzAgaDIgdjEgaC0yWiBNMTcgMzAgaDUgdjEgaC01WiBNMjQgMzAgaDIgdjEgaC0yWiBNMzAgMzAgaDIgdjEgaC0yWiBNMzYgMzAgaDEgdjEgaC0xWiBNMzggMzAgaDIgdjEgaC0yWiBNNDEgMzAgaDIgdjEgaC0yWiBNNSAzMSBoMSB2MSBoLTFaIE04IDMxIGgyIHYxIGgtMlogTTEyIDMxIGg0IHYxIGgtNFogTTE3IDMxIGgxIHYxIGgtMVogTTE5IDMxIGg0IHYxIGgtNFogTTI0IDMxIGg0IHYxIGgtNFogTTMyIDMxIGgxIHYxIGgtMVogTTM5IDMxIGgxIHYxIGgtMVogTTQzIDMxIGgyIHYxIGgtMlogTTQgMzIgaDQgdjEgaC00WiBNOSAzMiBoMSB2MSBoLTFaIE0xOCAzMiBoMSB2MSBoLTFaIE0yMCAzMiBoMSB2MSBoLTFaIE0yNiAzMiBoMiB2MSBoLTJaIE0yOSAzMiBoMyB2MSBoLTNaIE0zMyAzMiBoMSB2MSBoLTFaIE00MSAzMiBoMyB2MSBoLTNaIE00IDMzIGgxIHYxIGgtMVogTTggMzMgaDEgdjEgaC0xWiBNMTEgMzMgaDQgdjEgaC00WiBNMTYgMzMgaDEgdjEgaC0xWiBNMTkgMzMgaDEgdjEgaC0xWiBNMjEgMzMgaDMgdjEgaC0zWiBNMjcgMzMgaDEgdjEgaC0xWiBNMjkgMzMgaDEgdjEgaC0xWiBNMzIgMzMgaDUgdjEgaC01WiBNMzggMzMgaDEgdjEgaC0xWiBNNDAgMzMgaDEgdjEgaC0xWiBNNDIgMzMgaDMgdjEgaC0zWiBNNCAzNCBoMSB2MSBoLTFaIE03IDM0IGgzIHYxIGgtM1ogTTEyIDM0IGgyIHYxIGgtMlogTTE4IDM0IGgzIHYxIGgtM1ogTTI0IDM0IGgxIHYxIGgtMVogTTI2IDM0IGgxIHYxIGgtMVogTTMwIDM0IGg0IHYxIGgtNFogTTQgMzUgaDEgdjEgaC0xWiBNNiAzNSBoMSB2MSBoLTFaIE05IDM1IGgxIHYxIGgtMVogTTEzIDM1IGgyIHYxIGgtMlogTTE2IDM1IGgxIHYxIGgtMVogTTE4IDM1IGgyIHYxIGgtMlogTTIzIDM1IGgzIHYxIGgtM1ogTTMxIDM1IGgxIHYxIGgtMVogTTM0IDM1IGgyIHYxIGgtMlogTTM3IDM1IGgxIHYxIGgtMVogTTM5IDM1IGgxIHYxIGgtMVogTTQxIDM1IGgxIHYxIGgtMVogTTQzIDM1IGgyIHYxIGgtMlogTTQgMzYgaDEgdjEgaC0xWiBNNiAzNiBoMSB2MSBoLTFaIE0xMSAzNiBoNCB2MSBoLTRaIE0xNyAzNiBoMyB2MSBoLTNaIE0yMSAzNiBoMSB2MSBoLTFaIE0yMyAzNiBoMSB2MSBoLTFaIE0yNiAzNiBoNSB2MSBoLTVaIE0zMyAzNiBoMSB2MSBoLTFaIE00MiAzNiBoMSB2MSBoLTFaIE0xNSAzNyBoMSB2MSBoLTFaIE0yMCAzNyBoMSB2MSBoLTFaIE0yMyAzNyBoMiB2MSBoLTJaIE0yNyAzNyBoMiB2MSBoLTJaIE0zMiAzNyBoMSB2MSBoLTFaIE0zNCAzNyBoMSB2MSBoLTFaIE00MiAzNyBoMSB2MSBoLTFaIE00NCAzNyBoMSB2MSBoLTFaIE0xNCAzOCBoMSB2MSBoLTFaIE0xOSAzOCBoMiB2MSBoLTJaIE0yMiAzOCBoMSB2MSBoLTFaIE0yNCAzOCBoMyB2MSBoLTNaIE0zMCAzOCBoMiB2MSBoLTJaIE0zNCAzOCBoMiB2MSBoLTJaIE00MiAzOCBoMSB2MSBoLTFaIE0xMyAzOSBoMSB2MSBoLTFaIE0xOCAzOSBoMyB2MSBoLTNaIE0yMyAzOSBoMyB2MSBoLTNaIE0yNyAzOSBoMSB2MSBoLTFaIE0zMCAzOSBoMSB2MSBoLTFaIE0zMiAzOSBoMSB2MSBoLTFaIE0zNSAzOSBoMSB2MSBoLTFaIE00MyAzOSBoMSB2MSBoLTFaIE0xMyA0MCBoMSB2MSBoLTFaIE0xNSA0MCBoMiB2MSBoLTJaIE0xOSA0MCBoMSB2MSBoLTFaIE0yMiA0MCBoMSB2MSBoLTFaIE0yNiA0MCBoMSB2MSBoLTFaIE0yOCA0MCBoMyB2MSBoLTNaIE0zMyA0MCBoMSB2MSBoLTFaIE00MiA0MCBoMyB2MSBoLTNaIE0xMyA0MSBoMSB2MSBoLTFaIE0xNyA0MSBoNSB2MSBoLTVaIE0yMyA0MSBoMiB2MSBoLTJaIE0yNyA0MSBoNCB2MSBoLTRaIE0zMiA0MSBoMiB2MSBoLTJaIE0zNSA0MSBoMiB2MSBoLTJaIE00MSA0MSBoMSB2MSBoLTFaIE00NCA0MSBoMSB2MSBoLTFaIE0xNSA0MiBoNCB2MSBoLTRaIE0yMSA0MiBoMiB2MSBoLTJaIE0yNCA0MiBoMSB2MSBoLTFaIE0yOCA0MiBoNCB2MSBoLTRaIE0zNCA0MiBoMSB2MSBoLTFaIE0zNyA0MiBoMiB2MSBoLTJaIE00MCA0MiBoMiB2MSBoLTJaIE0xMyA0MyBoMSB2MSBoLTFaIE0xNSA0MyBoMSB2MSBoLTFaIE0yMCA0MyBoMSB2MSBoLTFaIE0yMiA0MyBoMSB2MSBoLTFaIE0yNSA0MyBoNCB2MSBoLTRaIE0zMCA0MyBoMyB2MSBoLTNaIE0zNSA0MyBoMiB2MSBoLTJaIE0zOSA0MyBoMSB2MSBoLTFaIE00MSA0MyBoMSB2MSBoLTFaIE00MyA0MyBoMSB2MSBoLTFaIE0xMyA0NCBoMSB2MSBoLTFaIE0xNSA0NCBoMyB2MSBoLTNaIE0yMCA0NCBoMiB2MSBoLTJaIE0yMyA0NCBoMSB2MSBoLTFaIE0yNiA0NCBoMSB2MSBoLTFaIE0yOCA0NCBoNCB2MSBoLTRaIE0zMyA0NCBoMSB2MSBoLTFaIE0zNSA0NCBoMSB2MSBoLTFaIE0zNyA0NCBoMSB2MSBoLTFaIE0zOSA0NCBoMSB2MSBoLTFaIE00MiA0NCBoMSB2MSBoLTFaICIgLz48cGF0aCBjbGFzcz0icXItMTUzNiAiIHN0cm9rZT0idHJhbnNwYXJlbnQiIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iMSIgZD0iTTQgNCBoNyB2MSBoLTdaIE0zOCA0IGg3IHYxIGgtN1ogTTQgNSBoMSB2MSBoLTFaIE0xMCA1IGgxIHYxIGgtMVogTTM4IDUgaDEgdjEgaC0xWiBNNDQgNSBoMSB2MSBoLTFaIE00IDYgaDEgdjEgaC0xWiBNMTAgNiBoMSB2MSBoLTFaIE0zOCA2IGgxIHYxIGgtMVogTTQ0IDYgaDEgdjEgaC0xWiBNNCA3IGgxIHYxIGgtMVogTTEwIDcgaDEgdjEgaC0xWiBNMzggNyBoMSB2MSBoLTFaIE00NCA3IGgxIHYxIGgtMVogTTQgOCBoMSB2MSBoLTFaIE0xMCA4IGgxIHYxIGgtMVogTTM4IDggaDEgdjEgaC0xWiBNNDQgOCBoMSB2MSBoLTFaIE00IDkgaDEgdjEgaC0xWiBNMTAgOSBoMSB2MSBoLTFaIE0zOCA5IGgxIHYxIGgtMVogTTQ0IDkgaDEgdjEgaC0xWiBNNCAxMCBoNyB2MSBoLTdaIE0zOCAxMCBoNyB2MSBoLTdaIE00IDM4IGg3IHYxIGgtN1ogTTQgMzkgaDEgdjEgaC0xWiBNMTAgMzkgaDEgdjEgaC0xWiBNNCA0MCBoMSB2MSBoLTFaIE0xMCA0MCBoMSB2MSBoLTFaIE00IDQxIGgxIHYxIGgtMVogTTEwIDQxIGgxIHYxIGgtMVogTTQgNDIgaDEgdjEgaC0xWiBNMTAgNDIgaDEgdjEgaC0xWiBNNCA0MyBoMSB2MSBoLTFaIE0xMCA0MyBoMSB2MSBoLTFaIE00IDQ0IGg3IHYxIGgtN1ogIiAvPjxwYXRoIGNsYXNzPSJxci0yNTYwICIgc3Ryb2tlPSJ0cmFuc3BhcmVudCIgZmlsbD0iIzAwMCIgZmlsbC1vcGFjaXR5PSIxIiBkPSJNMzYgMzYgaDUgdjEgaC01WiBNMzYgMzcgaDEgdjEgaC0xWiBNNDAgMzcgaDEgdjEgaC0xWiBNMzYgMzggaDEgdjEgaC0xWiBNMzggMzggaDEgdjEgaC0xWiBNNDAgMzggaDEgdjEgaC0xWiBNMzYgMzkgaDEgdjEgaC0xWiBNNDAgMzkgaDEgdjEgaC0xWiBNMzYgNDAgaDUgdjEgaC01WiAiIC8+PHBhdGggY2xhc3M9InFyLTMwNzIgIiBzdHJva2U9InRyYW5zcGFyZW50IiBmaWxsPSIjMDAwIiBmaWxsLW9wYWNpdHk9IjEiIGQ9Ik0xMiAxMCBoMSB2MSBoLTFaIE0xNCAxMCBoMSB2MSBoLTFaIE0xNiAxMCBoMSB2MSBoLTFaIE0xOCAxMCBoMSB2MSBoLTFaIE0yMCAxMCBoMSB2MSBoLTFaIE0yMiAxMCBoMSB2MSBoLTFaIE0yNCAxMCBoMSB2MSBoLTFaIE0yNiAxMCBoMSB2MSBoLTFaIE0yOCAxMCBoMSB2MSBoLTFaIE0zMCAxMCBoMSB2MSBoLTFaIE0zMiAxMCBoMSB2MSBoLTFaIE0zNCAxMCBoMSB2MSBoLTFaIE0zNiAxMCBoMSB2MSBoLTFaIE0xMCAxMiBoMSB2MSBoLTFaIE0xMCAxNCBoMSB2MSBoLTFaIE0xMCAxNiBoMSB2MSBoLTFaIE0xMCAxOCBoMSB2MSBoLTFaIE0xMCAyMCBoMSB2MSBoLTFaIE0xMCAyMiBoMSB2MSBoLTFaIE0xMCAyNCBoMSB2MSBoLTFaIE0xMCAyNiBoMSB2MSBoLTFaIE0xMCAyOCBoMSB2MSBoLTFaIE0xMCAzMCBoMSB2MSBoLTFaIE0xMCAzMiBoMSB2MSBoLTFaIE0xMCAzNCBoMSB2MSBoLTFaIE0xMCAzNiBoMSB2MSBoLTFaICIgLz48cGF0aCBjbGFzcz0icXItMzU4NCAiIHN0cm9rZT0idHJhbnNwYXJlbnQiIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iMSIgZD0iTTEyIDUgaDEgdjEgaC0xWiBNMTIgNyBoMSB2MSBoLTFaIE0xMiA5IGgxIHYxIGgtMVogTTQgMTIgaDUgdjEgaC01WiBNMTEgMTIgaDIgdjEgaC0yWiBNMzcgMTIgaDEgdjEgaC0xWiBNMzkgMTIgaDEgdjEgaC0xWiBNNDEgMTIgaDEgdjEgaC0xWiBNNDMgMTIgaDEgdjEgaC0xWiBNMTIgMzggaDEgdjEgaC0xWiBNMTIgNDAgaDEgdjEgaC0xWiBNMTIgNDEgaDEgdjEgaC0xWiBNMTIgNDIgaDEgdjEgaC0xWiBNMTIgNDMgaDEgdjEgaC0xWiBNMTIgNDQgaDEgdjEgaC0xWiAiIC8+PHBhdGggY2xhc3M9InFyLTU2MzIgIiBzdHJva2U9InRyYW5zcGFyZW50IiBmaWxsPSIjMDAwIiBmaWxsLW9wYWNpdHk9IjEiIGQ9Ik02IDYgaDMgdjEgaC0zWiBNNDAgNiBoMyB2MSBoLTNaIE02IDcgaDMgdjEgaC0zWiBNNDAgNyBoMyB2MSBoLTNaIE02IDggaDMgdjEgaC0zWiBNNDAgOCBoMyB2MSBoLTNaIE02IDQwIGgzIHYxIGgtM1ogTTYgNDEgaDMgdjEgaC0zWiBNNiA0MiBoMyB2MSBoLTNaICIgLz48L3N2Zz4K" alt="">
+        </div>
+    
+    <div class="tile-overlay absolute inset-0 bg-gradient-to-tr from-black/50 to-transparent"></div>
+
+    <div class="tile-content relative p-r-sm">
+                            <h3 class="text-white">Vom Bankgebäude zum urbanen Wahrzeichen – die Transformation an der Via Emilio Bossi</h3>
+                    </div>
+</div>                            </section>
+                                            <section
+            class="relative layout-container min-h-0 overflow-hidden flex-[2_2_0%] col-span-12">
+                                    <div 
+    class="md:col-span-1 tile group relative text-white text-shadow antialiased flex justify-start items-end h-full overflow-hidden bg-black transition shadow ease-out duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-light" id="block-5" x-appear="x-appear"
+>
+            <picture>
+    <source 
+        type="image/webp" 
+        srcset="https://signage.web233.onlime.ch/img/rV2p84pKNP/3840x0_fit/cintam-ejfg-abrfga-unsplash.webp?1768591881 3840w, https://signage.web233.onlime.ch/img/rV2p84pKNP/2560x0_fit/cintam-ejfg-abrfga-unsplash.webp?1768591881 2560w, https://signage.web233.onlime.ch/img/rV2p84pKNP/1920x0_fit/cintam-ejfg-abrfga-unsplash.webp?1768591881 1920w, https://signage.web233.onlime.ch/img/rV2p84pKNP/1440x0_fit/cintam-ejfg-abrfga-unsplash.webp?1768591881 1440w, https://signage.web233.onlime.ch/img/rV2p84pKNP/1280x0_fit/cintam-ejfg-abrfga-unsplash.webp?1768591881 1280w, https://signage.web233.onlime.ch/img/rV2p84pKNP/1024x0_fit/cintam-ejfg-abrfga-unsplash.webp?1768591881 1024w, https://signage.web233.onlime.ch/img/rV2p84pKNP/756x0_fit/cintam-ejfg-abrfga-unsplash.webp?1768591881 756w, https://signage.web233.onlime.ch/img/rV2p84pKNP/512x0_fit/cintam-ejfg-abrfga-unsplash.webp?1768591881 512w"
+        sizes="(min-width: 1280px) calc(100vw / 1),
+            (min-width: 768px) calc(100vw / 1),
+            100vw"
+        >
+    <img
+        srcset="https://signage.web233.onlime.ch/img/rV2p84pKNP/3840x0_fit/cintam-ejfg-abrfga-unsplash.jpg?1768591881 3840w, https://signage.web233.onlime.ch/img/rV2p84pKNP/2560x0_fit/cintam-ejfg-abrfga-unsplash.jpg?1768591881 2560w, https://signage.web233.onlime.ch/img/rV2p84pKNP/1920x0_fit/cintam-ejfg-abrfga-unsplash.jpg?1768591881 1920w, https://signage.web233.onlime.ch/img/rV2p84pKNP/1440x0_fit/cintam-ejfg-abrfga-unsplash.jpg?1768591881 1440w, https://signage.web233.onlime.ch/img/rV2p84pKNP/1280x0_fit/cintam-ejfg-abrfga-unsplash.jpg?1768591881 1280w, https://signage.web233.onlime.ch/img/rV2p84pKNP/1024x0_fit/cintam-ejfg-abrfga-unsplash.jpg?1768591881 1024w, https://signage.web233.onlime.ch/img/rV2p84pKNP/756x0_fit/cintam-ejfg-abrfga-unsplash.jpg?1768591881 756w, https://signage.web233.onlime.ch/img/rV2p84pKNP/512x0_fit/cintam-ejfg-abrfga-unsplash.jpg?1768591881 512w"
+        sizes="(min-width: 1280px) calc(100vw / 1),
+            (min-width: 768px) calc(100vw / 1),
+            100vw"
+        src="https://signage.web233.onlime.ch/img/rV2p84pKNP/1280x0_fit/cintam-ejfg-abrfga-unsplash.jpg?1768591881"
+        loading="lazy"
+        width="5819"
+        height="3879"
+        alt="Monday to Friday z&#039;Morge Angebot: 4 Gipfeli 2 Kaffi CHF 20.-"
+        
+        class="bg-cover bg-center object-cover object-center tile-image absolute inset-0 w-full h-full transition-all ease-out duration-300 group-hover:scale-[1.02] group-hover:opacity-80" style="background-color: #7C7665; background-image: url(&quot;https://signage.web233.onlime.ch/img/rV2p84pKNP/3x3_fit/cintam-ejfg-abrfga-unsplash.jpg?1768591881&quot;);
+                    object-fit: cover;
+                    object-position: 50% 50%;"
+        >
+</picture>
+    
+    
+    
+    <div class="tile-overlay absolute inset-0 bg-gradient-to-tr from-black/50 to-transparent"></div>
+
+    <div class="tile-content relative p-r-sm">
+                            <h3 class="text-white">Monday to Friday z&#039;Morge Angebot: 4 Gipfeli 2 Kaffi CHF 20.-</h3>
+                            <div class="text-white mt-r-xs">
+                <p>Restaurant Seerose – Wollishofen Hafen</p>
+            </div>
+            </div>
+</div>                            </section>
+            </div>
+                                                                <div
+    class="flex flex-col gap-r-sm min-h-0 flex-[2_2_0%] col-span-8"
+>
+    
+                                    <div class="grid grid-cols-12 gap-r-sm min-h-0 flex-[3_3_0%]">
+                                    <section
+                    class="relative min-h-0 overflow-hidden col-span-9">
+                                                    <div class="relative h-full w-full overflow-hidden"
+    x-data="{
+        debug: false,
+        state: 'init',
+        refresh() {
+            const v = $el.querySelector('video');
+            if (!v) { this.state = 'no <video> element'; return; }
+            const errNames = { 1: 'ABORTED', 2: 'NETWORK', 3: 'DECODE', 4: 'SRC_UNSUPPORTED' };
+            const bufEnd = v.buffered.length ? v.buffered.end(v.buffered.length - 1) : 0;
+            this.state = [
+                'err  : ' + (v.error ? (v.error.code + ' ' + (errNames[v.error.code] || '') + ' ' + (v.error.message || '')) : 'none'),
+                'ready: ' + v.readyState + '  net: ' + v.networkState,
+                'frame: ' + v.videoWidth + 'x' + v.videoHeight,
+                'play : paused=' + v.paused + '  t=' + (v.currentTime || 0).toFixed(1),
+                'buf  : ' + bufEnd.toFixed(1) + ' / dur ' + (isFinite(v.duration) ? v.duration.toFixed(1) : '?'),
+                'src  : ' + (v.currentSrc || '').slice(-56),
+            ].join('\n');
+        }
+    }"
+    x-init="
+        debug = location.search.includes('vdebug');
+        if (debug) { refresh(); setInterval(() => refresh(), 1000); }
+    "
+    >
+    <div x-show="debug" x-cloak
+        style="position:absolute;top:0;left:0;z-index:9999;margin:8px;padding:8px;background:rgba(0,0,0,.8);color:#0f0;font:12px/1.4 monospace;white-space:pre;pointer-events:none;max-width:95%;"
+        x-text="state"></div>
+
+            <video
+            class="block absolute w-full h-full object-cover"
+            poster="https://i.vimeocdn.com/video/1537613487-7cc79a8d445efe3c93884091f1dff9a6021083683b0c9e22f5b702c3064ca911-d_1920x1080?&amp;r=pad&amp;region=us"
+            autoplay muted loop playsinline
+            x-data="{ tries: 0 }"
+            x-init="
+                $el.muted = true;
+                const kick = () => { const p = $el.play(); if (p && p.catch) p.catch(() => {}); };
+                $el.addEventListener('loadeddata', kick);
+                $el.addEventListener('canplay', kick);
+                kick();
+                setInterval(() => { if ($el.paused && $el.readyState >= 2) kick(); }, 1000);
+            "
+            x-on:error="if (tries++ < 3) setTimeout(() => { $el.load(); $el.play() }, 2000)"
+            x-on:ended="$el.currentTime = 0; $el.play()"
+            >
+            
+                            <source src="https://player.vimeo.com/external/765687745.m3u8?s=91814d678833c87a2890268747975fbeaa87db23&amp;oauth2_token_id=1053797514" type="application/vnd.apple.mpegurl">
+                        <source src="https://player.vimeo.com/progressive_redirect/playback/765687745/rendition/720p/file.mp4%20%28720p%29.mp4?loc=external&amp;oauth2_token_id=1053797514&amp;signature=74f808a1b8dbc0b9f5e38f17a006502a58feeff1c6c4707a52b159351d11c062" type="video/mp4">
+        </video>
+    
+    </div>
+                                            </section>
+                                    <section
+                    class="relative min-h-0 overflow-hidden col-span-3">
+                                                    <section id="block-24" class="h-full flex flex-col justify-center">
+    <div class="h-full">
+        <div class="flex gap-r-sm items-center mb-r-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34" fill="none">
+                <path d="M0 0V34H34V0H0ZM20.7522 20.6547L20.7452 27.8251H13.5697V20.6594L6.42676 20.6524V13.4621H13.5685V6.29058H20.7464L20.7487 13.461H27.9057L27.908 20.6512L20.7511 20.6535L20.7522 20.6547Z" fill="#96744D"/>
+            </svg>
+            <h2 class="h3">Notfall Infos</h2>
+        </div>
+        <div class="flex flex-col h-full justify-between">
+                            <div class="flex justify-between">
+                    <p>Sanität</p>
+                    <p>114</p>
+                </div>
+                            <div class="flex justify-between">
+                    <p>Polizei</p>
+                    <p>117</p>
+                </div>
+                            <div class="flex justify-between">
+                    <p>Euronotruf</p>
+                    <p>112</p>
+                </div>
+                            <div class="flex justify-between">
+                    <p>REGA</p>
+                    <p>1414</p>
+                </div>
+                            <div class="flex justify-between">
+                    <p>Feuerwehr</p>
+                    <p>118</p>
+                </div>
+                            <div class="flex justify-between">
+                    <p>Vergiftungen</p>
+                    <p>145</p>
+                </div>
+                            <div class="flex justify-between">
+                    <p>Unfall</p>
+                    <p>144</p>
+                </div>
+                    </div>
+    </div>
+</section>
+                                            </section>
+                            </div>
+                                            <section
+            class="relative layout-container min-h-0 overflow-hidden flex-1 col-span-12">
+                                    <article 
+    data-card
+    x-appear="x-appear" class="card relative flex flex-col transition ease-out duration-300 hover:-translate-y-2 overflow-hidden shadow-lg text-white rounded h-full bg-primary bg-gradient-to-r from-primary to-primary-light"
+>
+    <div class="card-body grow p-r-2xs py-r-xs text-r-sm"
+    >
+            <div class="text-muted" style="">Parkplätze räumen</div>
+        <h4 class="card-title text-pretty" style="">Tiefgaragenreinigung</h4>
+        <div class="card-content text-pretty" style="">
+        <p>Freitag, 10.10.2025 von 8:00 - 17:00 Uhr</p>
+    </div>
+</div>
+</article>                            </section>
+                                            <div class="grid grid-cols-12 gap-r-sm min-h-0 flex-[2_2_0%]">
+                                    <section
+                    class="relative min-h-0 overflow-hidden col-span-9">
+                                                    <div
+    x-data="{
+        connections: [],
+        loading: true,
+        stale: false,
+        transportType: 'all',
+        formatTime(timestamp) {
+            if (!timestamp) return '';
+            return new Date(timestamp).toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' });
+        },
+        getDelay(scheduled, actual) {
+            if (!actual) return null;
+            const delay = Math.round((new Date(actual) - new Date(scheduled)) / 60000);
+            return delay > 1 ? delay : null;
+        },
+        applyFilter(list) {
+            if (this.transportType === 'all') return list;
+            return list.filter((c) => {
+                const cat = (c.category || '').toUpperCase();
+                if (this.transportType === 'tram') return cat === 'T' || cat === 'NFT' || cat === 'TRAM';
+                if (this.transportType === 'bus') return cat === 'B' || cat === 'NFB' || cat === 'BUS';
+                if (this.transportType === 'train') return ['S', 'SN', 'IC', 'IR', 'ICE', 'RE', 'R', 'EC', 'TGV', 'RJ'].includes(cat);
+                return true;
+            });
+        },
+        resolvedStation: 'Wollishofen Bahnhof',
+        async resolveStation() {
+            try {
+                const res = await fetch('https:\/\/transport.opendata.ch\/v1\/locations?type=station\u0026query=Wollishofen+Bahnhof');
+                if (!res.ok) return;
+                const data = await res.json();
+                const stations = (data.stations || []).filter((s) => s && s.id);
+                if (stations.length === 0) {
+                    console.warn('[timetable] no station match for', 'Wollishofen Bahnhof');
+                    return;
+                }
+                // Prefer exact (case-insensitive) name match, otherwise first result
+                const query = 'Wollishofen Bahnhof'.toLowerCase().trim();
+                const exact = stations.find((s) => (s.name || '').toLowerCase().trim() === query);
+                const picked = exact || stations[0];
+                this.resolvedStation = picked.id;
+                console.log('[timetable] resolved', 'Wollishofen Bahnhof', '→', picked.name, '(' + picked.id + ')');
+            } catch (err) {
+                console.warn('[timetable] station resolve failed, falling back to raw name', err);
+            }
+        },
+        async init () {
+            await this.resolveStation();
+            const stationboardUrl = 'https:\/\/transport.opendata.ch\/v1\/stationboard?limit=10\u0026station=' + encodeURIComponent(this.resolvedStation);
+            window.pollApi({
+                url: stationboardUrl,
+                intervalMs: 60000,
+                cacheKey: 'timetable_' + this.resolvedStation + '_' + this.transportType,
+                maxAgeMs: 10 * 60 * 1000,
+                onUpdate: (data, meta) => {
+                    this.loading = false;
+                    this.stale = meta.stale;
+                    const list = Array.isArray(data?.stationboard) ? data.stationboard : [];
+                    const filtered = this.applyFilter(list).slice(0, 5);
+                    this.connections.splice(0, this.connections.length, ...filtered);
+                },
+            });
+        }
+    }"
+    id="block-9"
+    class="h-full flex flex-col overflow-hidden"
+>
+    <div class="bg-silver text-white flex-1 flex flex-col min-h-0 overflow-hidden">
+        <!-- Empty State -->
+        <div x-show="!loading && connections.length === 0 && !stale" class="p-2 text-center opacity-75">
+            <p>Keine Verbindungen verfügbar.</p>
+        </div>
+
+        <!-- Header -->
+        <div class="grid grid-cols-12 py-2 px-3 sticky top-0 bg-silver-strong">
+            <div class="col-span-2">Linie</div>
+            <div class="col-span-2">Zeit</div>
+                            <div class="col-span-3">Von</div>
+                <div class="col-span-4">Nach</div>
+                <div class="col-span-1">Gleis</div>
+                    </div>
+
+        <!-- Loading State -->
+        <div x-show="loading" class="p-2 text-center">
+            <div class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-silver-light border-t-transparent"></div>
+        </div>
+
+        <!-- Connections -->
+        <div class="flex-1 overflow-auto">
+            <template x-for="connection in connections" :key="connection.name + connection.stop.departureTimestamp">
+                <div class="grid grid-cols-12 py-1.5 px-3 transition-colors last:border-b-0">
+                    <div class="col-span-2">
+                        <span class="font-bold" x-text="`${connection.category || ''}${connection.number || ''}`"></span>
+                    </div>
+                    <div class="col-span-2">
+                        <span x-text="formatTime(connection.stop.departure)"></span>
+                        <span
+                            x-show="connection.stop.prognosis && getDelay(connection.stop.departure, connection.stop.prognosis.departure)"
+                            x-text="`+${getDelay(connection.stop.departure, connection.stop.prognosis?.departure)}`"
+                            class="text-red-300"
+                        ></span>
+                    </div>
+                                            <div class="col-span-3 truncate">Wollishofen Bahnhof</div>
+                        <div class="col-span-4 truncate" x-text="connection.to"></div>
+                        <div class="col-span-1" x-text="connection.stop.platform || ''"></div>
+                                    </div>
+            </template>
+        </div>
+    </div>
+</div>
+                                            </section>
+                                    <section
+                    class="relative min-h-0 overflow-hidden col-span-3">
+                                                    <section :id="$block->anchor" class="h-full flex flex-col overflow-hidden">
+        <div class="grid grid-cols-2 flex-1 min-h-0" style="grid-auto-rows: 1fr;">
+                <a
+            href=""
+            title=""
+            target="_blank"
+            class="flex justify-center items-center p-r-xs min-h-0 overflow-hidden col-span-2 row-span-2"
+        >
+            <img
+                src="https://signage.web233.onlime.ch/media/emQ3m2p7d2"
+                alt=""
+                class="max-w-full max-h-full object-contain"
+                loading="lazy"
+            />
+        </a>
+                <a
+            href=""
+            title=""
+            target="_blank"
+            class="flex justify-center items-center p-r-xs min-h-0 overflow-hidden "
+        >
+            <img
+                src="https://signage.web233.onlime.ch/media/QZJ3Xngjya"
+                alt=""
+                class="max-w-full max-h-full object-contain"
+                loading="lazy"
+            />
+        </a>
+                <a
+            href=""
+            title=""
+            target="_blank"
+            class="flex justify-center items-center p-r-xs min-h-0 overflow-hidden "
+        >
+            <img
+                src="https://signage.web233.onlime.ch/media/6mE3o5gKkN"
+                alt=""
+                class="max-w-full max-h-full object-contain"
+                loading="lazy"
+            />
+        </a>
+                <a
+            href=""
+            title=""
+            target="_blank"
+            class="flex justify-center items-center p-r-xs min-h-0 overflow-hidden "
+        >
+            <img
+                src="https://signage.web233.onlime.ch/media/Y9MBaLgWLx"
+                alt=""
+                class="max-w-full max-h-full object-contain"
+                loading="lazy"
+            />
+        </a>
+                <a
+            href=""
+            title=""
+            target="_blank"
+            class="flex justify-center items-center p-r-xs min-h-0 overflow-hidden "
+        >
+            <img
+                src="https://signage.web233.onlime.ch/media/2qK31kg08d"
+                alt=""
+                class="max-w-full max-h-full object-contain"
+                loading="lazy"
+            />
+        </a>
+                <a
+            href=""
+            title=""
+            target="_blank"
+            class="flex justify-center items-center p-r-xs min-h-0 overflow-hidden "
+        >
+            <img
+                src="https://signage.web233.onlime.ch/media/7GzpyWByd6"
+                alt=""
+                class="max-w-full max-h-full object-contain"
+                loading="lazy"
+            />
+        </a>
+                <a
+            href=""
+            title=""
+            target="_blank"
+            class="flex justify-center items-center p-r-xs min-h-0 overflow-hidden "
+        >
+            <img
+                src="https://signage.web233.onlime.ch/media/8DQgEK3jXK"
+                alt=""
+                class="max-w-full max-h-full object-contain"
+                loading="lazy"
+            />
+        </a>
+            </div>
+</section>
+                                            </section>
+                            </div>
+            </div>
+                                    </div>
+    </div>
+    </div>
+    </main>
+</div>
+        
+    <!-- Livewire Scripts -->
+
+<script data-cookieconsent="ignore" src="/vendor/livewire/livewire.js?id=90730a3b0e7144480175" data-turbo-eval="false" data-turbolinks-eval="false" ></script>
+<script data-cookieconsent="ignore" data-turbo-eval="false" data-turbolinks-eval="false" >
+    if (window.livewire) {
+	    console.warn('Livewire: It looks like Livewire\'s @livewireScripts JavaScript assets have already been loaded. Make sure you aren\'t loading them twice.')
+	}
+
+    window.livewire = new Livewire();
+    window.livewire.devTools(true);
+    window.Livewire = window.livewire;
+    window.livewire_app_url = '';
+    window.livewire_token = 'XkisJLTsvrJMGrq4tQeMCZBdYyC6r0zmqUkbkbkr';
+
+	/* Make sure Livewire loads first. */
+	if (window.Alpine) {
+	    /* Defer showing the warning so it doesn't get buried under downstream errors. */
+	    document.addEventListener("DOMContentLoaded", function () {
+	        setTimeout(function() {
+	            console.warn("Livewire: It looks like AlpineJS has already been loaded. Make sure Livewire\'s scripts are loaded before Alpine.\\n\\n Reference docs for more info: http://laravel-livewire.com/docs/alpine-js")
+	        })
+	    });
+	}
+
+	/* Make Alpine wait until Livewire is finished rendering to do its thing. */
+    window.deferLoadingAlpine = function (callback) {
+        window.addEventListener('livewire:load', function () {
+            callback();
+        });
+    };
+
+    let started = false;
+
+    window.addEventListener('alpine:initializing', function () {
+        if (! started) {
+            window.livewire.start();
+
+            started = true;
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        if (! started) {
+            window.livewire.start();
+
+            started = true;
+        }
+    });
+</script>
 </body>
+
 </html>
